@@ -20,6 +20,12 @@
 英文學習系統是一個專為英語學習者設計的互動式學習平台。
 透過 YouTube 影片提供沉浸式學習體驗，支援雙語字幕同步顯示、單字查詢、個人單字庫管理、智慧複習等功能，幫助您更有效率地學習英語。
 
+## DEMO Site
+https://youtube-eng-cloud.onrender.com/
+
+ - 因為技術性問題, 架設在cloud上的server抓不到youtube字幕(local端沒問題)
+ - 所以只能DEMO URL填入: https://www.youtube.com/watch?v=zxKFzT6GjUk
+
 ### 主要特色
 
 - 🎥 **YouTube 影片整合**：支援所有 YouTube 影片，自動獲取並翻譯字幕
