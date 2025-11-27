@@ -9,7 +9,7 @@ let playbackSpeed = 1; // 播放速度
 let subtitleFontSize = 'medium'; // 字幕字體大小：small, medium, large
 let containerWidth = '1400'; // 容器寬度：1200, 1400, 1600, 1800, 100
 
-// 暱稱系統
+// Nickname system
 let currentNickname = null;
 
 // YouTube IFrame API 載入完成
@@ -19,16 +19,16 @@ function onYouTubeIframeAPIReady() {
     console.log('[DEBUG] YT.Player:', typeof YT !== 'undefined' && YT.Player ? '存在' : '不存在');
 }
 
-// 載入影片
+// Load Video
 document.getElementById('loadVideo').addEventListener('click', async () => {
-    console.log('[DEBUG] 載入影片按鈕被點擊');
+    console.log('[DEBUG] Load Video按鈕被點擊');
 
     const url = document.getElementById('youtubeUrl').value.trim();
     console.log('[DEBUG] 輸入的 URL:', url);
 
     if (!url) {
         console.log('[DEBUG] URL 為空');
-        showError('請輸入 YouTube 網址');
+        showError('Please enter a YouTube URL');
         return;
     }
 
@@ -43,12 +43,12 @@ document.getElementById('loadVideo').addEventListener('click', async () => {
     
     if (!videoId) {
         console.log('[DEBUG] 無法提取影片 ID');
-        showError('無效的 YouTube 網址');
+        showError('Invalid YouTube URL');
         return;
     }
 
     try {
-        console.log('[DEBUG] 開始載入影片，影片 ID:', videoId);
+        console.log('[DEBUG] 開始Load Video，影片 ID:', videoId);
         showError('');
         
         // 清除舊的字幕和狀態
@@ -60,7 +60,7 @@ document.getElementById('loadVideo').addEventListener('click', async () => {
         // 清除字幕顯示區域
         const subtitlesDiv = document.getElementById('subtitles');
         if (subtitlesDiv) {
-            subtitlesDiv.innerHTML = '<p class="placeholder">準備載入字幕...</p>';
+            subtitlesDiv.innerHTML = '<p class="placeholder">Preparing to load subtitles...</p>';
             // 確保行數類被應用
             ensureSubtitleLinesClass();
         }
@@ -82,7 +82,7 @@ document.getElementById('loadVideo').addEventListener('click', async () => {
         
         if (!videoSection) {
             console.error('[DEBUG] 找不到 videoSection 元素！');
-            showError('找不到影片區域元素');
+            showError('Video section element not found');
             return;
         }
         
@@ -109,7 +109,7 @@ document.getElementById('loadVideo').addEventListener('click', async () => {
         
         if (!playerDiv) {
             console.error('[DEBUG] 找不到 player div 元素！');
-            showError('找不到播放器元素');
+            showError('Player element not found');
             return;
         }
         
@@ -123,7 +123,7 @@ document.getElementById('loadVideo').addEventListener('click', async () => {
         console.log('[DEBUG] 檢查 YT 對象:', typeof YT);
         if (typeof YT === 'undefined' || !YT.Player) {
             console.error('[DEBUG] YouTube IFrame API 尚未載入！');
-            showError('YouTube API 尚未載入，請稍候再試');
+            showError('YouTube API is not ready yet, please try again soon');
             return;
         }
         
@@ -148,13 +148,13 @@ document.getElementById('loadVideo').addEventListener('click', async () => {
             console.error('[DEBUG] 字幕載入失敗（不影響影片播放）:', error);
             const subtitlesDiv = document.getElementById('subtitles');
             if (subtitlesDiv) {
-                subtitlesDiv.innerHTML = `<p class="placeholder" style="color: #f90;">字幕載入失敗：${error.message}，但影片可以正常播放</p>`;
+                subtitlesDiv.innerHTML = `<p class="placeholder" style="color: #f90;">Subtitle load failed: ${error.message}, but the video can still play</p>`;
             }
         });
     } catch (error) {
-        console.error('[DEBUG] 載入影片時發生錯誤:', error);
+        console.error('[DEBUG] Load Video時發生錯誤:', error);
         console.error('[DEBUG] 錯誤堆疊:', error.stack);
-        showError('載入失敗：' + error.message);
+        showError('Load failed: ' + error.message);
     }
 });
 
@@ -183,7 +183,7 @@ async function loadSubtitles(videoId) {
         return;
     }
     
-    subtitlesDiv.innerHTML = '<p class="placeholder">載入字幕中...（影片可以先播放）</p>';
+    subtitlesDiv.innerHTML = '<p class="placeholder">Loading subtitles... (you can start the video)</p>';
     // 確保行數類被應用
     ensureSubtitleLinesClass();
     
@@ -195,14 +195,14 @@ async function loadSubtitles(videoId) {
         // 添加超時處理
         const timeoutPromise = new Promise((_, reject) => {
             setTimeout(() => {
-                reject(new Error('請求超時（超過 60 秒）'));
+                reject(new Error('Request timed out (over 60 seconds)'));
             }, 60000); // 60 秒超時
         });
         
         // 更新進度顯示
         const progressInterval = setInterval(() => {
             const elapsed = Math.floor((Date.now() - startTime) / 1000);
-            subtitlesDiv.innerHTML = `<p class="placeholder">載入字幕中... (已等待 ${elapsed} 秒)</p>`;
+            subtitlesDiv.innerHTML = `<p class="placeholder">Loading subtitles... (已等待 ${elapsed} 秒)</p>`;
         }, 1000);
         
         const startTime = Date.now();
@@ -507,7 +507,7 @@ function bindWordClickEvents() {
 }
 
 // 顯示單字資訊
-// showAddToBank: true 表示從字幕點擊，顯示「加入單字庫」選項；false 表示從單字庫點擊，不顯示
+// showAddToBank: true 表示從字幕點擊，顯示「Add to word bank」選項；false 表示從單字庫點擊，不顯示
 async function showWordInfo(word, wordInfo = null, showAddToBank = true) {
     const modal = document.getElementById('wordModal');
     const modalTitle = document.getElementById('wordModalTitle');
@@ -521,7 +521,7 @@ async function showWordInfo(word, wordInfo = null, showAddToBank = true) {
     // 初始化footer為隱藏
     modalFooter.style.display = 'none';
 
-    // 顯示載入進度條
+    // 顯示Load progress條
     modalBody.innerHTML = `
         <div class="word-loading-section">
             <div class="loading-spinner"></div>
@@ -564,7 +564,7 @@ async function showWordInfo(word, wordInfo = null, showAddToBank = true) {
             return;
         }
 
-        // 否則從 API 獲取（從字幕點擊，顯示「加入單字庫」選項）
+        // 否則從 API 獲取（從字幕點擊，顯示「Add to word bank」選項）
         // 使用 encodeURIComponent 來正確處理包含空格的片語
         const encodedWord = encodeURIComponent(word).replace(/%20/g, '+');
         const response = await fetch(`/api/word/${encodedWord}`);
@@ -702,7 +702,7 @@ function fallbackToSpeechSynthesis(text) {
 }
 
 // 顯示單字資訊內容
-// showAddToBank: true 表示顯示「加入單字庫」選項；false 表示不顯示
+// showAddToBank: true 表示顯示「Add to word bank」選項；false 表示不顯示
 function displayWordInfo(data, showAddToBank = true) {
     const modalBody = document.getElementById('wordModalBody');
     const modalFooter = document.getElementById('wordModalFooter');
@@ -714,21 +714,21 @@ function displayWordInfo(data, showAddToBank = true) {
     console.log('[調試] isPhrase:', isPhrase);
     console.log('[調試] showAddToBank:', showAddToBank);
 
-    // 對於片語，不顯示加入單字庫的選項
+    // 對於片語，不顯示Add to word bank的選項
     if (showAddToBank && !isPhrase) {
         console.log('[調試] 顯示單字庫選項');
         modalFooter.style.display = 'block';
         // 先顯示載入狀態
         modalFooter.innerHTML = `
             <div class="add-to-bank-section">
-                <label>加入單字庫：</label>
+                <label>Add to word bank：</label>
                 <div class="bank-loading">
                     <div class="bank-loading-spinner"></div>
                     <span>載入單字庫中...</span>
                 </div>
             </div>
         `;
-        // 異步載入單字庫列表
+        // 異步載入Word bank list
         console.log('[調試] 調用 loadBankSelectForModal');
         loadBankSelectForModal();
     } else {
@@ -841,10 +841,10 @@ function displayWordInfo(data, showAddToBank = true) {
     
     modalBody.innerHTML = html;
 
-    // 保存當前單字資訊，用於加入單字庫
+    // 保存當前單字資訊，用於Add to word bank
     window.currentWordData = data;
 
-    // 添加學習記錄
+    // 添加Learning Records
     if (isPhrase) {
         addLearningRecord('phrase_lookup', { phrase: word });
     } else {
@@ -917,7 +917,7 @@ function onPlayerReady(event) {
     const videoId = extractVideoId(url);
     if (videoId) {
         currentLearningVideoId = videoId;
-        console.log('[學習統計] 影片載入成功，videoId:', videoId);
+        console.log('[Learning stats] 影片載入成功，videoId:', videoId);
     }
 
     // 開始監聽播放時間
@@ -1502,7 +1502,7 @@ window.addEventListener('resize', () => {
 
 // 載入保存的設置
 function loadSavedSettings() {
-    // 載入影片大小設置
+    // Load Video大小設置
     const savedVideoSize = localStorage.getItem('videoSize');
     if (savedVideoSize && ['small', 'medium', 'large'].includes(savedVideoSize)) {
         setVideoSize(savedVideoSize);
@@ -1686,33 +1686,33 @@ function showError(message) {
     }
 }
 
-// Enter 鍵載入影片
+// Enter 鍵Load Video
 document.getElementById('youtubeUrl').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         document.getElementById('loadVideo').click();
     }
 });
 
-// ==================== 書籤功能 ====================
+// ==================== Bookmarks功能 ====================
 
 const BOOKMARKS_STORAGE_KEY = 'youtube_bookmarks';
 
-// 載入書籤（從服務器）
+// 載入Bookmarks（從服務器）
 async function loadBookmarks() {
     try {
         const nickname = getCurrentNickname();
-        console.log('[DEBUG] 載入書籤，當前暱稱:', nickname);
+        console.log('[DEBUG] 載入Bookmarks，當前暱稱:', nickname);
         
         if (!nickname) {
-            console.log('[DEBUG] 沒有暱稱，無法載入書籤');
+            console.log('[DEBUG] 沒有暱稱，無法載入Bookmarks');
             return [];
         }
 
-        // 從服務器 API 獲取書籤
+        // 從服務器 API 獲取Bookmarks
         const response = await fetch(`/api/bookmarks?nickname=${encodeURIComponent(nickname)}`);
         if (!response.ok) {
             if (response.status === 404) {
-                console.log('[DEBUG] 服務器上沒有書籤數據');
+                console.log('[DEBUG] 服務器上沒有Bookmarks數據');
                 return [];
             }
             throw new Error(`HTTP ${response.status}`);
@@ -1720,13 +1720,13 @@ async function loadBookmarks() {
 
         const data = await response.json();
         const bookmarks = data.bookmarks || [];
-        console.log('[DEBUG] 從服務器載入書籤成功，數量:', bookmarks.length, '書籤:', bookmarks);
+        console.log('[DEBUG] 從服務器載入Bookmarks成功，數量:', bookmarks.length, 'Bookmarks:', bookmarks);
         
-        // 嘗試從 localStorage 遷移舊書籤（如果服務器上沒有）
+        // 嘗試從 localStorage 遷移舊Bookmarks（如果服務器上沒有）
         if (bookmarks.length === 0) {
             const migratedBookmarks = migrateBookmarksFromLocalStorage(nickname);
             if (migratedBookmarks.length > 0) {
-                console.log('[DEBUG] 從 localStorage 遷移書籤，數量:', migratedBookmarks.length);
+                console.log('[DEBUG] 從 localStorage 遷移Bookmarks，數量:', migratedBookmarks.length);
                 await saveBookmarks(migratedBookmarks);
                 return migratedBookmarks;
             }
@@ -1734,13 +1734,13 @@ async function loadBookmarks() {
         
         return Array.isArray(bookmarks) ? bookmarks : [];
     } catch (error) {
-        console.error('[DEBUG] 載入書籤失敗:', error);
+        console.error('[DEBUG] 載入Bookmarks失敗:', error);
         // 如果 API 失敗，嘗試從 localStorage 載入（向後兼容）
         return loadBookmarksFromLocalStorage();
     }
 }
 
-// 從 localStorage 載入書籤（向後兼容）
+// 從 localStorage 載入Bookmarks（向後兼容）
 function loadBookmarksFromLocalStorage() {
     try {
         const nickname = getCurrentNickname();
@@ -1750,7 +1750,7 @@ function loadBookmarksFromLocalStorage() {
         const bookmarksJson = localStorage.getItem(storageKey);
         if (bookmarksJson) {
             const bookmarks = JSON.parse(bookmarksJson);
-            console.log('[DEBUG] 從 localStorage 載入書籤，數量:', bookmarks.length);
+            console.log('[DEBUG] 從 localStorage 載入Bookmarks，數量:', bookmarks.length);
             return Array.isArray(bookmarks) ? bookmarks : [];
         }
         
@@ -1758,16 +1758,16 @@ function loadBookmarksFromLocalStorage() {
         const migratedData = checkAlternativeBookmarkKeys(nickname);
         if (migratedData) {
             const bookmarks = JSON.parse(migratedData);
-            console.log('[DEBUG] 從替代鍵載入書籤成功，數量:', bookmarks.length);
+            console.log('[DEBUG] 從替代鍵載入Bookmarks成功，數量:', bookmarks.length);
             return Array.isArray(bookmarks) ? bookmarks : [];
         }
     } catch (error) {
-        console.error('[DEBUG] 從 localStorage 載入書籤失敗:', error);
+        console.error('[DEBUG] 從 localStorage 載入Bookmarks失敗:', error);
     }
     return [];
 }
 
-// 從 localStorage 遷移書籤到服務器
+// 從 localStorage 遷移Bookmarks到服務器
 function migrateBookmarksFromLocalStorage(nickname) {
     try {
         const storageKey = `youtube_bookmarks_${nickname}`;
@@ -1776,7 +1776,7 @@ function migrateBookmarksFromLocalStorage(nickname) {
             const bookmarks = JSON.parse(bookmarksJson);
             // 遷移後清除 localStorage
             localStorage.removeItem(storageKey);
-            console.log('[DEBUG] 已從 localStorage 遷移書籤到服務器');
+            console.log('[DEBUG] 已從 localStorage 遷移Bookmarks到服務器');
             return Array.isArray(bookmarks) ? bookmarks : [];
         }
         
@@ -1787,12 +1787,12 @@ function migrateBookmarksFromLocalStorage(nickname) {
             return Array.isArray(bookmarks) ? bookmarks : [];
         }
     } catch (error) {
-        console.error('[DEBUG] 遷移書籤失敗:', error);
+        console.error('[DEBUG] 遷移Bookmarks失敗:', error);
     }
     return [];
 }
 
-// 檢查是否有其他可能的書籤鍵（用於處理大小寫問題）
+// 檢查是否有其他可能的Bookmarks鍵（用於處理大小寫問題）
 function checkAlternativeBookmarkKeys(nickname) {
     // 檢查所有可能的鍵變體
     const variants = [
@@ -1811,22 +1811,22 @@ function checkAlternativeBookmarkKeys(nickname) {
         const key = `youtube_bookmarks_${variant}`;
         const data = localStorage.getItem(key);
         if (data) {
-            console.log('[DEBUG] 找到替代書籤鍵:', key);
+            console.log('[DEBUG] 找到替代Bookmarks鍵:', key);
             // 遷移到當前暱稱的鍵
             localStorage.setItem(`youtube_bookmarks_${nickname}`, data);
-            console.log('[DEBUG] 已將書籤遷移到當前暱稱鍵');
+            console.log('[DEBUG] 已將Bookmarks遷移到當前暱稱鍵');
             return data; // 返回數據以便立即使用
         }
     }
     return null;
 }
 
-// 保存書籤（到服務器）
+// 保存Bookmarks（到服務器）
 async function saveBookmarks(bookmarks) {
     try {
         const nickname = getCurrentNickname();
         if (!nickname) {
-            console.error('[DEBUG] 沒有暱稱，無法保存書籤');
+            console.error('[DEBUG] 沒有暱稱，無法保存Bookmarks');
             return false;
         }
 
@@ -1848,20 +1848,20 @@ async function saveBookmarks(bookmarks) {
 
         const data = await response.json();
         if (data.success) {
-            console.log('[DEBUG] 書籤已保存到服務器，數量:', bookmarks.length);
+            console.log('[DEBUG] Bookmarks已保存到服務器，數量:', bookmarks.length);
             return true;
         } else {
             throw new Error(data.error || '保存失敗');
         }
     } catch (error) {
-        console.error('[DEBUG] 保存書籤到服務器失敗:', error);
+        console.error('[DEBUG] 保存Bookmarks到服務器失敗:', error);
         // 如果 API 失敗，嘗試保存到 localStorage（向後兼容）
         console.log('[DEBUG] 嘗試保存到 localStorage 作為備份');
         return saveBookmarksToLocalStorage(bookmarks);
     }
 }
 
-// 保存書籤到 localStorage（向後兼容）
+// 保存Bookmarks到 localStorage（向後兼容）
 function saveBookmarksToLocalStorage(bookmarks) {
     try {
         const nickname = getCurrentNickname();
@@ -1869,28 +1869,28 @@ function saveBookmarksToLocalStorage(bookmarks) {
 
         const storageKey = `youtube_bookmarks_${nickname}`;
         localStorage.setItem(storageKey, JSON.stringify(bookmarks));
-        console.log('[DEBUG] 書籤已保存到 localStorage，數量:', bookmarks.length);
+        console.log('[DEBUG] Bookmarks已保存到 localStorage，數量:', bookmarks.length);
         return true;
     } catch (error) {
-        console.error('[DEBUG] 保存書籤到 localStorage 失敗:', error);
+        console.error('[DEBUG] 保存Bookmarks到 localStorage 失敗:', error);
         return false;
     }
 }
 
-// 渲染書籤列表
+// 渲染Bookmarks列表
 async function renderBookmarks() {
     const bookmarkList = document.getElementById('bookmarkList');
     if (!bookmarkList) {
-        console.warn('[DEBUG] 找不到書籤列表元素');
+        console.warn('[DEBUG] 找不到Bookmarks列表元素');
         return false;
     }
     
     const bookmarks = await loadBookmarks();
-    console.log('[DEBUG] 渲染書籤，數量:', bookmarks.length, '書籤數據:', bookmarks);
+    console.log('[DEBUG] 渲染Bookmarks，數量:', bookmarks.length, 'Bookmarks數據:', bookmarks);
     
     if (bookmarks.length === 0) {
-        bookmarkList.innerHTML = '<p class="placeholder">還沒有書籤</p>';
-        console.log('[DEBUG] 書籤為空，顯示提示訊息');
+        bookmarkList.innerHTML = '<p class="placeholder">還沒有Bookmarks</p>';
+        console.log('[DEBUG] Bookmarks為空，顯示提示訊息');
         return true;
     }
     
@@ -1920,16 +1920,16 @@ async function renderBookmarks() {
     // 強制更新內容
     try {
         bookmarkList.innerHTML = html;
-        console.log('[DEBUG] 書籤列表已渲染，HTML 長度:', html.length);
+        console.log('[DEBUG] Bookmarks列表已渲染，HTML 長度:', html.length);
         console.log('[DEBUG] bookmarkList 元素:', bookmarkList);
         console.log('[DEBUG] bookmarkList.innerHTML 長度:', bookmarkList.innerHTML.length);
         
         // 驗證渲染結果
         const renderedItems = bookmarkList.querySelectorAll('.bookmark-item');
-        console.log('[DEBUG] 渲染後的書籤項目數量:', renderedItems.length);
+        console.log('[DEBUG] 渲染後的Bookmarks項目數量:', renderedItems.length);
         
         if (renderedItems.length === 0 && bookmarks.length > 0) {
-            console.error('[DEBUG] 警告：渲染後沒有找到書籤項目！');
+            console.error('[DEBUG] 警告：渲染後沒有找到Bookmarks項目！');
             console.error('[DEBUG] HTML 內容:', html.substring(0, 500));
             console.error('[DEBUG] bookmarkList.innerHTML:', bookmarkList.innerHTML.substring(0, 500));
         }
@@ -1941,12 +1941,12 @@ async function renderBookmarks() {
         
         return true;
     } catch (error) {
-        console.error('[DEBUG] 渲染書籤時發生錯誤:', error);
+        console.error('[DEBUG] 渲染Bookmarks時發生錯誤:', error);
         return false;
     }
 }
 
-// 添加書籤（支持命名）
+// 添加Bookmarks（支持命名）
 async function addBookmark() {
     const urlInput = document.getElementById('youtubeUrl');
     const url = urlInput.value.trim();
@@ -1958,7 +1958,7 @@ async function addBookmark() {
     
     const videoId = extractVideoId(url);
     if (!videoId) {
-        alert('無效的 YouTube 網址');
+        alert('Invalid YouTube URL');
         return;
     }
     
@@ -1966,13 +1966,13 @@ async function addBookmark() {
     
     // 檢查是否已存在
     if (bookmarks.some(b => b.url === url)) {
-        alert('此網址已經在書籤中');
+        alert('此網址已經在Bookmarks中');
         return;
     }
     
-    // 詢問書籤名稱
+    // 詢問Bookmarks名稱
     const defaultName = `影片 ${videoId}`;
-    const bookmarkName = prompt('請輸入書籤名稱：', defaultName);
+    const bookmarkName = prompt('請輸入Bookmarks名稱：', defaultName);
     
     if (bookmarkName === null) {
         // 用戶取消
@@ -1981,7 +1981,7 @@ async function addBookmark() {
     
     const name = bookmarkName.trim() || defaultName;
     
-    // 添加新書籤
+    // 添加新Bookmarks
     const bookmark = {
         url: url,
         title: name,
@@ -1992,18 +1992,18 @@ async function addBookmark() {
     
     if (await saveBookmarks(bookmarks)) {
         await renderBookmarks();
-        alert('書籤已添加！');
+        alert('Bookmarks已添加！');
     } else {
-        alert('添加書籤失敗');
+        alert('添加Bookmarks失敗');
     }
 }
 
-// 選擇書籤
+// 選擇Bookmarks
 async function selectBookmark(url) {
     const urlInput = document.getElementById('youtubeUrl');
     urlInput.value = url;
     
-    // 記錄書籤被觀看（如果是從書籤列表點擊的）
+    // 記錄Bookmarks被觀看（如果是從Bookmarks列表點擊的）
     try {
         await fetch('/api/bookmarks/record-view', {
             method: 'POST',
@@ -2013,31 +2013,31 @@ async function selectBookmark(url) {
             body: JSON.stringify({ url: url })
         });
     } catch (error) {
-        console.error('[DEBUG] 記錄書籤觀看失敗:', error);
+        console.error('[DEBUG] 記錄Bookmarks觀看失敗:', error);
         // 即使記錄失敗，也繼續執行
     }
     
-    // 關閉書籤下拉選單
+    // 關閉Bookmarks下拉選單
     const dropdown = document.getElementById('bookmarkDropdown');
     if (dropdown) {
         dropdown.style.display = 'none';
     }
     
-    // 可選：自動載入影片
+    // 可選：自動Load Video
     // document.getElementById('loadVideo').click();
 }
 
-// 編輯書籤名稱
+// 編輯Bookmarks名稱
 async function editBookmark(index, currentTitle) {
     const bookmarks = await loadBookmarks();
     
     if (index < 0 || index >= bookmarks.length) {
-        alert('書籤不存在');
+        alert('Bookmarks不存在');
         return;
     }
     
     const bookmark = bookmarks[index];
-    const newTitle = prompt('請輸入新的書籤名稱：', currentTitle);
+    const newTitle = prompt('請輸入新的Bookmarks名稱：', currentTitle);
     
     if (newTitle === null) {
         // 用戶取消
@@ -2046,7 +2046,7 @@ async function editBookmark(index, currentTitle) {
     
     const trimmedTitle = newTitle.trim();
     if (!trimmedTitle) {
-        alert('書籤名稱不能為空');
+        alert('Bookmarks名稱不能為空');
         return;
     }
     
@@ -2055,21 +2055,21 @@ async function editBookmark(index, currentTitle) {
     
     if (await saveBookmarks(bookmarks)) {
         await renderBookmarks();
-        alert('書籤名稱已更新！');
+        alert('Bookmarks名稱已更新！');
     } else {
-        alert('更新書籤失敗');
+        alert('更新Bookmarks失敗');
     }
 }
 
-// 刪除書籤
+// 刪除Bookmarks
 async function deleteBookmark(index) {
-    if (!confirm('確定要刪除此書籤嗎？')) {
+    if (!confirm('確定要刪除此Bookmarks嗎？')) {
         return;
     }
     
     const bookmarks = await loadBookmarks();
     if (index < 0 || index >= bookmarks.length) {
-        alert('書籤不存在');
+        alert('Bookmarks不存在');
         return;
     }
     
@@ -2078,11 +2078,11 @@ async function deleteBookmark(index) {
     if (await saveBookmarks(bookmarks)) {
         await renderBookmarks();
     } else {
-        alert('刪除書籤失敗');
+        alert('刪除Bookmarks失敗');
     }
 }
 
-// 動態調整 input-section 的高度以適應書籤下拉選單
+// 動態調整 input-section 的高度以適應Bookmarks下拉選單
 function adjustInputSectionHeight() {
     const dropdown = document.getElementById('bookmarkDropdown');
     const inputSection = document.querySelector('.input-section');
@@ -2096,10 +2096,10 @@ function adjustInputSectionHeight() {
                       (dropdown.style.display === 'block' || dropdown.style.display === '');
     
     if (isVisible) {
-        // 書籤下拉選單打開時，計算實際高度
+        // Bookmarks下拉選單打開時，計算實際高度
         const bookmarkList = document.getElementById('bookmarkList');
         if (bookmarkList) {
-            // 獲取書籤列表的實際高度，加上下拉選單的邊距和標題高度
+            // 獲取Bookmarks列表的實際高度，加上下拉選單的邊距和標題高度
             const listHeight = bookmarkList.scrollHeight;
             const headerHeight = dropdown.querySelector('.bookmark-header')?.offsetHeight || 0;
             const totalHeight = listHeight + headerHeight + 10; // 10px 是額外的邊距
@@ -2108,12 +2108,12 @@ function adjustInputSectionHeight() {
             inputSection.style.paddingBottom = `${Math.max(totalHeight, 30)}px`;
         }
     } else {
-        // 書籤下拉選單關閉時，恢復正常 padding
+        // Bookmarks下拉選單關閉時，恢復正常 padding
         inputSection.style.paddingBottom = '30px';
     }
 }
 
-// 書籤按鈕點擊事件（在 DOM 載入後註冊）
+// Bookmarks按鈕點擊事件（在 DOM 載入後註冊）
 let bookmarkButtonSetup = false;
 function setupBookmarkButton() {
     const bookmarkBtn = document.getElementById('bookmarkBtn');
@@ -2122,26 +2122,26 @@ function setupBookmarkButton() {
         
         bookmarkBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            console.log('[DEBUG] 書籤按鈕被點擊');
+            console.log('[DEBUG] Bookmarks按鈕被點擊');
             const dropdown = document.getElementById('bookmarkDropdown');
             if (dropdown) {
                 const isVisible = dropdown.style.display === 'block';
                 
                 if (!isVisible) {
                     // 打開下拉選單
-                    console.log('[DEBUG] 打開書籤下拉選單，強制重新渲染書籤');
+                    console.log('[DEBUG] 打開Bookmarks下拉選單，強制重新渲染Bookmarks');
                     dropdown.style.display = 'block';
                     
                     // 立即渲染，然後驗證
                     (async () => {
                         const bookmarks = await loadBookmarks();
-                        console.log('[DEBUG] 準備渲染，書籤數量:', bookmarks.length);
+                        console.log('[DEBUG] 準備渲染，Bookmarks數量:', bookmarks.length);
                         
                         // 強制重新渲染（確保元素可見後再渲染）
                         setTimeout(async () => {
                             const bookmarkList = document.getElementById('bookmarkList');
                             if (!bookmarkList) {
-                                console.error('[DEBUG] 錯誤：找不到書籤列表元素！');
+                                console.error('[DEBUG] 錯誤：找不到Bookmarks列表元素！');
                                 return;
                             }
                             
@@ -2155,7 +2155,7 @@ function setupBookmarkButton() {
                             console.log('[DEBUG] bookmarkList.innerHTML 前500字符:', bookmarkList.innerHTML.substring(0, 500));
                             
                             if (items.length === 0 && bookmarks.length > 0) {
-                                console.error('[DEBUG] 錯誤：有書籤數據但未渲染！強制重新渲染');
+                                console.error('[DEBUG] 錯誤：有Bookmarks數據但未渲染！強制重新渲染');
                                 // 再次嘗試渲染
                                 await renderBookmarks();
                             }
@@ -2168,23 +2168,23 @@ function setupBookmarkButton() {
                     })();
                 } else {
                     // 關閉下拉選單
-                    console.log('[DEBUG] 關閉書籤下拉選單');
+                    console.log('[DEBUG] 關閉Bookmarks下拉選單');
                     dropdown.style.display = 'none';
                     // 關閉後調整高度
                     adjustInputSectionHeight();
                 }
             }
         });
-        console.log('[DEBUG] 書籤按鈕事件監聽器已註冊');
+        console.log('[DEBUG] Bookmarks按鈕事件監聽器已註冊');
     } else if (!bookmarkBtn) {
-        console.warn('[DEBUG] 找不到書籤按鈕，稍後重試');
+        console.warn('[DEBUG] 找不到Bookmarks按鈕，稍後重試');
         setTimeout(setupBookmarkButton, 100);
     }
 }
 
-// 設置書籤相關的事件監聽器
+// 設置Bookmarks相關的事件監聽器
 function setupBookmarkEventListeners() {
-    // 添加書籤按鈕
+    // 添加Bookmarks按鈕
     const addBookmarkBtn = document.getElementById('addBookmarkBtn');
     if (addBookmarkBtn) {
         addBookmarkBtn.addEventListener('click', (e) => {
@@ -2193,7 +2193,7 @@ function setupBookmarkEventListeners() {
         });
     }
     
-    // 匯出書籤按鈕
+    // ExportBookmarks按鈕
     const exportBookmarksBtn = document.getElementById('exportBookmarksBtn');
     if (exportBookmarksBtn) {
         exportBookmarksBtn.addEventListener('click', (e) => {
@@ -2202,7 +2202,7 @@ function setupBookmarkEventListeners() {
         });
     }
     
-    // 匯入書籤按鈕
+    // ImportBookmarks按鈕
     const importBookmarksBtn = document.getElementById('importBookmarksBtn');
     if (importBookmarksBtn) {
         importBookmarksBtn.addEventListener('click', (e) => {
@@ -2214,7 +2214,7 @@ function setupBookmarkEventListeners() {
         });
     }
     
-    // 處理書籤文件選擇
+    // 處理Bookmarks文件選擇
     const importBookmarkFileInput = document.getElementById('importBookmarkFileInput');
     if (importBookmarkFileInput) {
         importBookmarkFileInput.addEventListener('change', (e) => {
@@ -2237,13 +2237,13 @@ function setupBookmarkEventListeners() {
 
 // 這些事件監聽器已經在 setupBookmarkEventListeners() 中註冊，無需重複
 
-// 匯出書籤功能
+// ExportBookmarks功能
 async function exportBookmarks() {
     try {
         const bookmarks = await loadBookmarks();
         
         if (bookmarks.length === 0) {
-            alert('沒有書籤可以匯出');
+            alert('沒有Bookmarks可以Export');
             return;
         }
         
@@ -2262,14 +2262,14 @@ async function exportBookmarks() {
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
         
-        alert('書籤匯出成功！');
+        alert('BookmarksExport成功！');
     } catch (error) {
-        console.error('[DEBUG] 匯出書籤失敗:', error);
-        alert('匯出失敗：' + error.message);
+        console.error('[DEBUG] ExportBookmarks失敗:', error);
+        alert('Export失敗：' + error.message);
     }
 }
 
-// 匯入書籤功能
+// ImportBookmarks功能
 async function importBookmarks(file) {
     const reader = new FileReader();
     
@@ -2278,37 +2278,37 @@ async function importBookmarks(file) {
             const importedBookmarks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedBookmarks)) {
-                alert('無效的書籤格式');
+                alert('無效的Bookmarks格式');
                 return;
             }
             
-            // 驗證書籤格式
+            // 驗證Bookmarks格式
             const validBookmarks = importedBookmarks.filter(b => b.url && b.title);
             if (validBookmarks.length === 0) {
-                alert('文件中沒有有效的書籤');
+                alert('文件中沒有有效的Bookmarks');
                 return;
             }
             
-            // 確認匯入
-            if (!confirm(`確定要匯入 ${validBookmarks.length} 個書籤嗎？\n如果 URL 相同，會更新書籤名稱。`)) {
+            // 確認Import
+            if (!confirm(`確定要Import ${validBookmarks.length} 個Bookmarks嗎？\n如果 URL 相同，會更新Bookmarks名稱。`)) {
                 return;
             }
             
             const existingBookmarks = await loadBookmarks();
             const urlMap = new Map();
             
-            // 建立現有書籤的 URL 映射
+            // 建立現有Bookmarks的 URL 映射
             existingBookmarks.forEach(b => {
                 urlMap.set(b.url, b);
             });
             
-            // 合併書籤
+            // 合併Bookmarks
             let importedCount = 0;
             let updatedCount = 0;
             
             validBookmarks.forEach(bookmark => {
                 if (urlMap.has(bookmark.url)) {
-                    // 更新現有書籤
+                    // 更新現有Bookmarks
                     const existing = urlMap.get(bookmark.url);
                     existing.title = bookmark.title;
                     if (bookmark.addedAt) {
@@ -2316,7 +2316,7 @@ async function importBookmarks(file) {
                     }
                     updatedCount++;
                 } else {
-                    // 添加新書籤
+                    // 添加新Bookmarks
                     existingBookmarks.push({
                         url: bookmark.url,
                         title: bookmark.title,
@@ -2328,13 +2328,13 @@ async function importBookmarks(file) {
             
             if (await saveBookmarks(existingBookmarks)) {
                 await renderBookmarks();
-                alert(`匯入成功！\n新增 ${importedCount} 個書籤\n更新 ${updatedCount} 個書籤`);
+                alert(`Import成功！\n新增 ${importedCount} 個Bookmarks\n更新 ${updatedCount} 個Bookmarks`);
             } else {
-                alert('保存書籤失敗');
+                alert('保存Bookmarks失敗');
             }
         } catch (error) {
-            console.error('[DEBUG] 匯入書籤失敗:', error);
-            alert('匯入失敗：' + error.message);
+            console.error('[DEBUG] ImportBookmarks失敗:', error);
+            alert('Import失敗：' + error.message);
         }
     };
     
@@ -2345,7 +2345,7 @@ async function importBookmarks(file) {
     reader.readAsText(file);
 }
 
-// 點擊外部關閉書籤下拉選單
+// 點擊外部關閉Bookmarks下拉選單
 document.addEventListener('click', (e) => {
     const dropdown = document.getElementById('bookmarkDropdown');
     const bookmarkBtn = document.getElementById('bookmarkBtn');
@@ -2359,9 +2359,9 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// 測試書籤功能（可在控制台手動調用）
+// 測試Bookmarks功能（可在控制台手動調用）
 window.testBookmarks = function() {
-    console.log('========== 測試書籤功能 ==========');
+    console.log('========== 測試Bookmarks功能 ==========');
     console.log('1. 檢查 localStorage:');
     const stored = localStorage.getItem(BOOKMARKS_STORAGE_KEY);
     console.log('   localStorage 內容:', stored);
@@ -2369,8 +2369,8 @@ window.testBookmarks = function() {
     console.log('2. 檢查 loadBookmarks():');
     (async () => {
         const bookmarks = await loadBookmarks();
-        console.log('   書籤數量:', bookmarks.length);
-        console.log('   書籤數據:', bookmarks);
+        console.log('   Bookmarks數量:', bookmarks.length);
+        console.log('   Bookmarks數據:', bookmarks);
         
         console.log('3. 檢查 DOM 元素:');
         const bookmarkList = document.getElementById('bookmarkList');
@@ -2399,20 +2399,20 @@ window.testBookmarks = function() {
     console.log('========== 測試完成 ==========');
 };
 
-// 頁面載入時渲染書籤
+// 頁面載入時渲染Bookmarks
 function initBookmarks() {
-    console.log('[DEBUG] 初始化書籤，readyState:', document.readyState);
+    console.log('[DEBUG] 初始化Bookmarks，readyState:', document.readyState);
     const bookmarkList = document.getElementById('bookmarkList');
     const bookmarkDropdown = document.getElementById('bookmarkDropdown');
     
     if (bookmarkList && bookmarkDropdown) {
-        console.log('[DEBUG] 找到書籤列表元素和下拉選單，開始渲染');
+        console.log('[DEBUG] 找到Bookmarks列表元素和下拉選單，開始渲染');
         console.log('[DEBUG] 下拉選單顯示狀態:', bookmarkDropdown.style.display);
         
         // 檢查是否有暱稱，如果沒有則等待
         const nickname = getCurrentNickname();
         if (!nickname) {
-            console.log('[DEBUG] 還沒有暱稱，等待暱稱載入後再初始化書籤');
+            console.log('[DEBUG] 還沒有暱稱，等待暱稱載入後再初始化Bookmarks');
             // 等待暱稱載入（最多等待5秒）
             let retryCount = 0;
             const maxRetries = 50; // 50次 * 100ms = 5秒
@@ -2420,11 +2420,11 @@ function initBookmarks() {
                 retryCount++;
                 const currentNickname = getCurrentNickname();
                 if (currentNickname) {
-                    console.log('[DEBUG] 暱稱已載入，現在初始化書籤');
+                    console.log('[DEBUG] 暱稱已載入，現在初始化Bookmarks');
                     clearInterval(checkNickname);
                     loadAndRenderBookmarks();
                 } else if (retryCount >= maxRetries) {
-                    console.log('[DEBUG] 等待暱稱超時，使用空書籤列表');
+                    console.log('[DEBUG] 等待暱稱超時，使用空Bookmarks列表');
                     clearInterval(checkNickname);
                     bookmarkList.innerHTML = '<p class="placeholder">請先輸入暱稱</p>';
                 }
@@ -2435,20 +2435,20 @@ function initBookmarks() {
         // 有暱稱，直接載入和渲染
         loadAndRenderBookmarks();
     } else {
-        console.warn('[DEBUG] 找不到書籤元素，bookmarkList:', !!bookmarkList, 'bookmarkDropdown:', !!bookmarkDropdown);
+        console.warn('[DEBUG] 找不到Bookmarks元素，bookmarkList:', !!bookmarkList, 'bookmarkDropdown:', !!bookmarkDropdown);
         // 如果元素還沒準備好，稍後再試
         setTimeout(initBookmarks, 100);
     }
 }
 
-// 載入並渲染書籤
+// 載入並渲染Bookmarks
 async function loadAndRenderBookmarks() {
     const bookmarkList = document.getElementById('bookmarkList');
     if (!bookmarkList) return;
     
     // 無論下拉選單是否顯示，都先渲染內容
     const bookmarks = await loadBookmarks();
-    console.log('[DEBUG] 載入的書籤數量:', bookmarks.length);
+    console.log('[DEBUG] 載入的Bookmarks數量:', bookmarks.length);
     
     if (bookmarks.length > 0) {
         // 強制渲染
@@ -2459,7 +2459,7 @@ async function loadAndRenderBookmarks() {
             const renderedItems = bookmarkList.querySelectorAll('.bookmark-item');
             console.log('[DEBUG] 初始化後驗證，渲染的項目數量:', renderedItems.length);
                 if (renderedItems.length === 0 && bookmarks.length > 0) {
-                    console.error('[DEBUG] 警告：書籤數據存在但未渲染！');
+                    console.error('[DEBUG] 警告：Bookmarks數據存在但未渲染！');
                     // 再次嘗試渲染
                     (async () => {
                         await renderBookmarks();
@@ -2467,34 +2467,34 @@ async function loadAndRenderBookmarks() {
                 }
         }, 100);
     } else {
-        bookmarkList.innerHTML = '<p class="placeholder">還沒有書籤</p>';
+        bookmarkList.innerHTML = '<p class="placeholder">還沒有Bookmarks</p>';
     }
 }
 
-// 確保在 DOM 載入完成後初始化書籤和設置事件監聽器
+// 確保在 DOM 載入完成後初始化Bookmarks和設置事件監聽器
 (function() {
     let initialized = false;
     
     function initAll() {
         if (initialized) {
-            console.log('[DEBUG] 書籤系統已經初始化，跳過');
+            console.log('[DEBUG] Bookmarks系統已經初始化，跳過');
             return;
         }
         initialized = true;
         
-        console.log('[DEBUG] ========== 開始初始化書籤系統 ==========');
+        console.log('[DEBUG] ========== 開始初始化Bookmarks系統 ==========');
         console.log('[DEBUG] document.readyState:', document.readyState);
         console.log('[DEBUG] bookmarkList 元素存在:', !!document.getElementById('bookmarkList'));
         console.log('[DEBUG] bookmarkBtn 元素存在:', !!document.getElementById('bookmarkBtn'));
         
-        // 先初始化書籤渲染
+        // 先初始化Bookmarks渲染
         initBookmarks();
         
         // 然後設置事件監聽器
         setupBookmarkButton();
         setupBookmarkEventListeners();
         
-        console.log('[DEBUG] ========== 書籤系統初始化完成 ==========');
+        console.log('[DEBUG] ========== Bookmarks系統初始化完成 ==========');
     }
     
     if (document.readyState === 'loading') {
@@ -2517,7 +2517,7 @@ let reviewWords = []; // 複習用的單字列表
 let currentReviewIndex = 0; // 當前複習的單字索引
 let showAnswer = false; // 是否顯示答案
 let correctAnswers = 0; // 正確答案數量
-let reviewMode = 'spaced'; // 複習模式：'spaced'、'random' 或 'fill-in-blank'
+let reviewMode = 'spaced'; // Review mode：'spaced'、'random' 或 'fill-in-blank'
 let fillInBlankAnswer = ''; // 用戶填寫的答案
 let fillInBlankSubmitted = false; // 是否已提交答案
 
@@ -2531,14 +2531,14 @@ async function loadBankSelect() {
 
     try {
         const response = await fetch(`/api/word-banks?nickname=${encodeURIComponent(nickname)}`);
-        if (!response.ok) throw new Error('無法載入單字庫列表');
+        if (!response.ok) throw new Error('無法載入Word bank list');
         
         const data = await response.json();
         const banks = data.word_banks || [];
         
-        // 更新加入單字庫的選單
+        // 更新Add to word bank的選單
         if (bankSelect) {
-            bankSelect.innerHTML = '<option value="">選擇單字庫...</option>';
+            bankSelect.innerHTML = '<option value="">Choose a word bank...</option>';
             banks.forEach(bank => {
                 const option = document.createElement('option');
                 option.value = bank.name;
@@ -2549,7 +2549,7 @@ async function loadBankSelect() {
         
         // 更新複習用的選單
         if (reviewBankSelect) {
-            reviewBankSelect.innerHTML = '<option value="">請選擇單字庫...</option>';
+            reviewBankSelect.innerHTML = '<option value="">請Choose a word bank...</option>';
             banks.forEach(bank => {
                 const option = document.createElement('option');
                 option.value = bank.name;
@@ -2558,7 +2558,7 @@ async function loadBankSelect() {
             });
         }
     } catch (error) {
-        console.error('[DEBUG] 載入單字庫列表失敗:', error);
+        console.error('[DEBUG] 載入Word bank list失敗:', error);
     }
 }
 
@@ -2582,7 +2582,7 @@ async function loadBankSelectForModal() {
     }
 
     try {
-        console.log('[調試] 開始載入單字庫列表，暱稱:', nickname);
+        console.log('[調試] 開始載入Word bank list，暱稱:', nickname);
         const response = await fetch(`/api/word-banks?nickname=${encodeURIComponent(nickname)}`);
         console.log('[調試] API 響應狀態:', response.status);
 
@@ -2600,9 +2600,9 @@ async function loadBankSelectForModal() {
         // 生成完整的footer HTML
         let html = `
             <div class="add-to-bank-section">
-                <label for="bankSelect">加入單字庫：</label>
+                <label for="bankSelect">Add to word bank：</label>
                 <select id="bankSelect" class="bank-select">
-                    <option value="">選擇單字庫...</option>`;
+                    <option value="">Choose a word bank...</option>`;
 
         banks.forEach(bank => {
             console.log('[調試] 添加單字庫:', bank.name, bank.word_count);
@@ -2612,7 +2612,7 @@ async function loadBankSelectForModal() {
         html += `
                 </select>
                 <button id="addToBankBtn" class="add-to-bank-btn">加入</button>
-                <button id="createBankBtn" class="create-bank-btn">新建單字庫</button>
+                <button id="createBankBtn" class="create-bank-btn">Create word bank</button>
             </div>
         `;
 
@@ -2624,7 +2624,7 @@ async function loadBankSelectForModal() {
         console.log('[調試] 單字庫載入完成');
 
     } catch (error) {
-        console.error('[調試] 載入單字庫列表失敗:', error);
+        console.error('[調試] 載入Word bank list失敗:', error);
         modalFooter.innerHTML = `
             <div class="add-to-bank-section">
                 <p style="color: #c33;">載入單字庫失敗：${error.message}</p>
@@ -2645,7 +2645,7 @@ function setupModalBankEvents() {
             const bankName = bankSelect.value;
 
             if (!bankName) {
-                alert('請選擇單字庫');
+                alert('請Choose a word bank');
                 return;
             }
 
@@ -2656,7 +2656,7 @@ function setupModalBankEvents() {
 
             const nickname = getCurrentNickname();
             if (!nickname) {
-                alert('請先設定暱稱');
+                alert('Please set a nickname first');
                 return;
             }
 
@@ -2678,10 +2678,10 @@ function setupModalBankEvents() {
                     throw new Error(error.error || '加入失敗');
                 }
 
-                alert('單字已加入單字庫！');
+                alert('單字已Add to word bank！');
                 bankSelect.value = '';
 
-                // 添加學習記錄
+                // 添加Learning Records
                 addLearningRecord('word_added', {
                     word: window.currentWordData.word,
                     bank_name: bankName
@@ -2694,7 +2694,7 @@ function setupModalBankEvents() {
         });
     }
 
-    // 新建單字庫
+    // Create word bank
     const createBankBtn = document.getElementById('createBankBtn');
     if (createBankBtn) {
         createBankBtn.addEventListener('click', async () => {
@@ -2705,7 +2705,7 @@ function setupModalBankEvents() {
 
             const nickname = getCurrentNickname();
             if (!nickname) {
-                alert('請先設定暱稱');
+                alert('Please set a nickname first');
                 return;
             }
 
@@ -2727,7 +2727,7 @@ function setupModalBankEvents() {
                 }
 
                 alert('單字庫創建成功！');
-                // 重新載入單字庫列表
+                // 重新載入Word bank list
                 loadBankSelectForModal();
 
             } catch (error) {
@@ -2745,7 +2745,7 @@ if (document.getElementById('addToBankBtn')) {
         const bankName = bankSelect.value;
         
         if (!bankName) {
-            alert('請選擇單字庫');
+            alert('請Choose a word bank');
             return;
         }
         
@@ -2756,7 +2756,7 @@ if (document.getElementById('addToBankBtn')) {
 
         const nickname = getCurrentNickname();
         if (!nickname) {
-            alert('請先設定暱稱');
+            alert('Please set a nickname first');
             return;
         }
 
@@ -2779,10 +2779,10 @@ if (document.getElementById('addToBankBtn')) {
             }
             
             const result = await response.json();
-            alert(result.message || '單字已加入單字庫！');
+            alert(result.message || '單字已Add to word bank！');
             bankSelect.value = '';
 
-            // 添加學習記錄
+            // 添加Learning Records
             addLearningRecord('word_added', {
                 word: window.currentWordData.word,
                 bank_name: bankName
@@ -2794,7 +2794,7 @@ if (document.getElementById('addToBankBtn')) {
     });
 }
 
-// 新建單字庫
+// Create word bank
 if (document.getElementById('createBankBtn')) {
     document.getElementById('createBankBtn').addEventListener('click', () => {
         const bankName = prompt('請輸入單字庫名稱：');
@@ -2811,7 +2811,7 @@ async function createWordBank(bankName) {
     try {
         const nickname = getCurrentNickname();
         if (!nickname) {
-            alert('請先設定暱稱');
+            alert('Please set a nickname first');
             return;
         }
 
@@ -2860,25 +2860,25 @@ if (document.getElementById('wordBankModalClose')) {
     });
 }
 
-// 載入單字庫列表
+// 載入Word bank list
 async function loadBankList() {
     const bankList = document.getElementById('bankList');
     if (!bankList) return;
 
-    bankList.innerHTML = '<div class="loading-spinner">載入中...</div>';
+    bankList.innerHTML = '<div class="loading-spinner">Loading...</div>';
 
     try {
         const nickname = getCurrentNickname();
         if (!nickname) return;
 
         const response = await fetch(`/api/word-banks?nickname=${encodeURIComponent(nickname)}`);
-        if (!response.ok) throw new Error('無法載入單字庫列表');
+        if (!response.ok) throw new Error('無法載入Word bank list');
         
         const data = await response.json();
         const banks = data.word_banks || [];
         
         if (banks.length === 0) {
-            bankList.innerHTML = '<p class="placeholder">還沒有單字庫，點擊「新建單字庫」創建一個吧！</p>';
+            bankList.innerHTML = '<p class="placeholder">還沒有單字庫，點擊「Create word bank」創建一個吧！</p>';
             return;
         }
         
@@ -2901,8 +2901,8 @@ async function loadBankList() {
         
         bankList.innerHTML = html;
     } catch (error) {
-        console.error('[DEBUG] 載入單字庫列表失敗:', error);
-        bankList.innerHTML = '<p class="placeholder" style="color: #c33;">載入失敗：' + error.message + '</p>';
+        console.error('[DEBUG] 載入Word bank list失敗:', error);
+        bankList.innerHTML = '<p class="placeholder" style="color: #c33;">Load failed: ' + error.message + '</p>';
     }
 }
 
@@ -2915,7 +2915,7 @@ async function viewBankContent(bankName) {
     if (!modal || !title || !content) return;
 
     title.textContent = `單字庫：${bankName}`;
-    content.innerHTML = '<div class="loading-spinner">載入中...</div>';
+    content.innerHTML = '<div class="loading-spinner">Loading...</div>';
     modal.style.display = 'flex';
 
     const nickname = getCurrentNickname();
@@ -2954,7 +2954,7 @@ async function viewBankContent(bankName) {
         content.innerHTML = html;
     } catch (error) {
         console.error('[DEBUG] 載入單字庫內容失敗:', error);
-        content.innerHTML = '<p class="placeholder" style="color: #c33;">載入失敗：' + error.message + '</p>';
+        content.innerHTML = '<p class="placeholder" style="color: #c33;">Load failed: ' + error.message + '</p>';
     }
 }
 
@@ -2967,7 +2967,7 @@ async function removeWordFromBank(bankName, word) {
     try {
         const nickname = getCurrentNickname();
         if (!nickname) {
-            alert('請先設定暱稱');
+            alert('Please set a nickname first');
             return;
         }
 
@@ -3004,7 +3004,7 @@ async function deleteWordBank(bankName) {
     
     const nickname = getCurrentNickname();
     if (!nickname) {
-        alert('請先設定暱稱');
+        alert('Please set a nickname first');
         return;
     }
 
@@ -3027,7 +3027,7 @@ async function deleteWordBank(bankName) {
     }
 }
 
-// 新建單字庫按鈕（在單字庫列表中）
+// Create word bank按鈕（在Word bank list中）
 if (document.getElementById('createNewBankBtn')) {
     document.getElementById('createNewBankBtn').addEventListener('click', () => {
         const bankName = prompt('請輸入單字庫名稱：');
@@ -3041,14 +3041,14 @@ if (document.getElementById('createNewBankBtn')) {
     });
 }
 
-// 匯出單字庫
+// Export單字庫
 if (document.getElementById('exportBanksBtn')) {
     document.getElementById('exportBanksBtn').addEventListener('click', async () => {
         try {
             const response = await fetch('/api/word-banks/export');
             if (!response.ok) {
                 const error = await response.json();
-                throw new Error(error.error || '匯出失敗');
+                throw new Error(error.error || 'Export失敗');
             }
             
             // 獲取文件名（從 Content-Disposition header）
@@ -3072,15 +3072,15 @@ if (document.getElementById('exportBanksBtn')) {
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
             
-            alert('單字庫匯出成功！');
+            alert('單字庫Export成功！');
         } catch (error) {
-            console.error('[DEBUG] 匯出失敗:', error);
-            alert('匯出失敗：' + error.message);
+            console.error('[DEBUG] Export失敗:', error);
+            alert('Export失敗：' + error.message);
         }
     });
 }
 
-// 匯入單字庫
+// Import單字庫
 if (document.getElementById('importBanksBtn')) {
     document.getElementById('importBanksBtn').addEventListener('click', () => {
         const fileInput = document.getElementById('importFileInput');
@@ -3104,8 +3104,8 @@ if (document.getElementById('importFileInput')) {
             return;
         }
         
-        // 確認匯入
-        if (!confirm(`確定要匯入單字庫嗎？\n如果單字庫名稱相同，會合併單字。`)) {
+        // 確認Import
+        if (!confirm(`確定要Import單字庫嗎？\n如果單字庫名稱相同，會合併單字。`)) {
             e.target.value = ''; // 清除選擇
             return;
         }
@@ -3121,19 +3121,19 @@ if (document.getElementById('importFileInput')) {
             
             if (!response.ok) {
                 const error = await response.json();
-                throw new Error(error.error || '匯入失敗');
+                throw new Error(error.error || 'Import失敗');
             }
             
             const result = await response.json();
-            alert(result.message || '匯入成功！');
+            alert(result.message || 'Import成功！');
             
-            // 重新載入單字庫列表
+            // 重新載入Word bank list
             loadBankList();
             loadBankSelect();
             
         } catch (error) {
-            console.error('[DEBUG] 匯入失敗:', error);
-            alert('匯入失敗：' + error.message);
+            console.error('[DEBUG] Import失敗:', error);
+            alert('Import失敗：' + error.message);
         } finally {
             // 清除文件選擇
             e.target.value = '';
@@ -3167,7 +3167,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     });
 });
 
-// 複習模式切換
+// Review mode切換
 document.querySelectorAll('.review-mode-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         // 移除所有按鈕的active類
@@ -3175,32 +3175,32 @@ document.querySelectorAll('.review-mode-btn').forEach(btn => {
         // 添加當前按鈕的active類
         btn.classList.add('active');
 
-        // 更新複習模式
+        // 更新Review mode
         reviewMode = btn.dataset.mode;
-        console.log('[複習模式] 切換到:', reviewMode);
+        console.log('[Review mode] 切換到:', reviewMode);
     });
 });
 
-// 開始複習
+// Start reviewing
 if (document.getElementById('startReviewBtn')) {
     document.getElementById('startReviewBtn').addEventListener('click', async () => {
         const bankName = document.getElementById('reviewBankSelect').value;
         if (!bankName) {
-            alert('請選擇單字庫');
+            alert('請Choose a word bank');
             return;
         }
 
         const nickname = getCurrentNickname();
         if (!nickname) {
-            alert('請先設定暱稱');
+            alert('Please set a nickname first');
             return;
         }
 
         try {
             if (reviewMode === 'spaced') {
-                // 間隔重複學習模式
+                // Spaced repetition學習模式
                 const response = await fetch(`/api/word-banks/${encodeURIComponent(bankName)}/spaced-repetition?nickname=${encodeURIComponent(nickname)}`);
-                if (!response.ok) throw new Error('無法載入複習單字');
+                if (!response.ok) throw new Error('無法載入Review words');
 
                 const data = await response.json();
                 const words = data.words || [];
@@ -3211,9 +3211,9 @@ if (document.getElementById('startReviewBtn')) {
                 }
 
                 reviewWords = words;
-                console.log(`[間隔重複] 載入 ${words.length} 個單字進行複習，其中 ${data.review_count} 個需要複習，${data.new_count} 個新單字`);
+                console.log(`[Spaced repetition] 載入 ${words.length} 個單字進行複習，其中 ${data.review_count} 個需要複習，${data.new_count} 個新單字`);
             } else if (reviewMode === 'fill-in-blank') {
-                // 填空模式 - 載入所有單字
+                // Fill in the blank - 載入所有單字
                 const response = await fetch(`/api/word-banks/${encodeURIComponent(bankName)}?nickname=${encodeURIComponent(nickname)}`);
                 if (!response.ok) throw new Error('無法載入單字庫內容');
 
@@ -3227,9 +3227,9 @@ if (document.getElementById('startReviewBtn')) {
 
                 // 打亂順序
                 reviewWords = words.sort(() => Math.random() - 0.5);
-                console.log(`[填空模式] 載入 ${words.length} 個單字進行複習`);
+                console.log(`[Fill in the blank] 載入 ${words.length} 個單字進行複習`);
             } else {
-                // 隨機複習模式
+                // 隨機Review mode
                 const response = await fetch(`/api/word-banks/${encodeURIComponent(bankName)}?nickname=${encodeURIComponent(nickname)}`);
                 if (!response.ok) throw new Error('無法載入單字庫內容');
 
@@ -3253,13 +3253,13 @@ if (document.getElementById('startReviewBtn')) {
 
             displayReviewCard();
         } catch (error) {
-            console.error('[DEBUG] 載入複習單字失敗:', error);
-            alert('載入失敗：' + error.message);
+            console.error('[DEBUG] 載入Review words失敗:', error);
+            alert('Load failed: ' + error.message);
         }
     });
 }
 
-// 生成部分字母（填空模式用）
+// 生成部分字母（Fill in the blank用）
 function generatePartialWord(word) {
     if (!word || word.length === 0) return '';
     
@@ -3314,7 +3314,7 @@ function displayReviewCard() {
         if (nickname && reviewWords.length > 0) {
             recordReviewResult(nickname, correctAnswers, reviewWords.length);
 
-            // 添加學習記錄
+            // 添加Learning Records
             const accuracy = Math.round((correctAnswers / reviewWords.length) * 100);
             addLearningRecord('word_review', {
                 word_count: reviewWords.length,
@@ -3340,7 +3340,7 @@ function displayReviewCard() {
     const word = wordItem.word.replace(/'/g, "\\'");
     const phonetic = (wordInfo.phonetic || '').replace(/'/g, "\\'");
     
-    // 填空模式
+    // Fill in the blank
     if (reviewMode === 'fill-in-blank') {
         // 重置狀態（如果是新單字）
         if (!fillInBlankSubmitted) {
@@ -3422,7 +3422,7 @@ function displayReviewCard() {
         return;
     }
     
-    // 原有的間隔重複和隨機複習模式
+    // 原有的Spaced repetition和隨機Review mode
     // 獲取難度等級
     let difficultyClass = 'difficulty-new';
     let difficultyText = '新單字';
@@ -3527,7 +3527,7 @@ async function nextReviewWord(know) {
         correctAnswers++;
     }
 
-    // 在間隔重複模式下更新學習記錄
+    // 在Spaced repetition模式下更新Learning Records
     if (reviewMode === 'spaced' && currentReviewIndex < reviewWords.length) {
         const wordItem = reviewWords[currentReviewIndex];
         const bankName = document.getElementById('reviewBankSelect').value;
@@ -3546,9 +3546,9 @@ async function nextReviewWord(know) {
                         nickname: nickname
                     })
                 });
-                console.log(`[間隔重複] 單字 "${wordItem.word}" 學習記錄已更新，正確: ${know}`);
+                console.log(`[Spaced repetition] 單字 "${wordItem.word}" Learning Records已更新，正確: ${know}`);
             } catch (error) {
-                console.error('[間隔重複] 更新學習記錄失敗:', error);
+                console.error('[Spaced repetition] 更新Learning Records失敗:', error);
             }
         }
     }
@@ -3558,7 +3558,7 @@ async function nextReviewWord(know) {
     displayReviewCard();
 }
 
-// 重新開始複習
+// 重新Start reviewing
 function restartReview() {
     currentReviewIndex = 0;
     showAnswer = false;
@@ -3595,7 +3595,7 @@ window.submitFillInBlankAnswer = function() {
 
 // 下一個填空單字（暴露到全局作用域）
 window.nextFillInBlankWord = function() {
-    // 在間隔重複模式下更新學習記錄
+    // 在Spaced repetition模式下更新Learning Records
     if (reviewMode === 'spaced' && currentReviewIndex < reviewWords.length) {
         const wordItem = reviewWords[currentReviewIndex];
         const bankName = document.getElementById('reviewBankSelect').value;
@@ -3616,9 +3616,9 @@ window.nextFillInBlankWord = function() {
                     nickname: nickname
                 })
             }).then(() => {
-                console.log(`[填空模式] 單字 "${wordItem.word}" 學習記錄已更新，正確: ${isCorrect}`);
+                console.log(`[Fill in the blank] 單字 "${wordItem.word}" Learning Records已更新，正確: ${isCorrect}`);
             }).catch(error => {
-                console.error('[填空模式] 更新學習記錄失敗:', error);
+                console.error('[Fill in the blank] 更新Learning Records失敗:', error);
             });
         }
     }
@@ -3629,7 +3629,7 @@ window.nextFillInBlankWord = function() {
     displayReviewCard();
 };
 
-// 顯示填空模式的例句（暴露到全局作用域）
+// 顯示Fill in the blank的例句（暴露到全局作用域）
 window.showFillInBlankExample = function(exampleWithStars, exampleZh, exampleEn) {
     // 創建例句Modal
     const modal = document.createElement('div');
@@ -3686,7 +3686,7 @@ function showWordInfoFromBankByIndex(index) {
             bankContentModalWasOpen = false;
         }
 
-        // 從單字庫點擊，不顯示「加入單字庫」選項
+        // 從單字庫點擊，不顯示「Add to word bank」選項
         showWordInfo(word, wordInfo, false);
     } else {
         console.error('[DEBUG] 無效的單字索引:', index);
@@ -3694,14 +3694,14 @@ function showWordInfoFromBankByIndex(index) {
 }
 
 // ================================
-// 暱稱系統相關函數
+// Nickname system相關函數
 // ================================
 
-// 初始化暱稱系統
+// 初始化Nickname system
 function initializeNicknameSystem() {
     // 檢查是否已有儲存的暱稱
     currentNickname = localStorage.getItem('english_learning_nickname');
-    console.log('[調試] 初始化暱稱系統，當前暱稱:', currentNickname);
+    console.log('[調試] 初始化Nickname system，當前暱稱:', currentNickname);
 
     if (currentNickname) {
         // 顯示暱稱
@@ -3759,7 +3759,7 @@ function hideNicknameModal() {
     }
 }
 
-// 設置暱稱系統的事件監聽器
+// 設置Nickname system的事件監聽器
 function setupNicknameEventListeners() {
     // 確認暱稱按鈕
     const confirmBtn = document.getElementById('confirmNicknameBtn');
@@ -3769,7 +3769,7 @@ function setupNicknameEventListeners() {
             const nickname = input.value.trim();
 
             if (!nickname) {
-                alert('請輸入暱稱');
+                alert('Please enter a nickname');
                 input.focus();
                 return;
             }
@@ -3788,8 +3788,8 @@ function setupNicknameEventListeners() {
             hideNicknameModal();
             showNicknameDisplay(nickname);
             
-            // 暱稱設置後，重新載入書籤
-            console.log('[DEBUG] 暱稱已設置，重新載入書籤');
+            // 暱稱設置後，重新載入Bookmarks
+            console.log('[DEBUG] 暱稱已設置，重新載入Bookmarks');
             if (typeof loadAndRenderBookmarks === 'function') {
                 loadAndRenderBookmarks();
             } else if (typeof initBookmarks === 'function') {
@@ -3946,7 +3946,7 @@ async function loadLearningTimeLeaderboard() {
     const container = document.getElementById('learningTimeLeaderboard');
     if (!container) return;
 
-    container.innerHTML = '<div class="loading-spinner">載入中...</div>';
+    container.innerHTML = '<div class="loading-spinner">Loading...</div>';
 
     try {
         const response = await fetch('/api/leaderboard/learning-time');
@@ -3958,7 +3958,7 @@ async function loadLearningTimeLeaderboard() {
         if (leaderboard.length === 0) {
             container.innerHTML = `
                 <div class="leaderboard-empty">
-                    <h3>📊 還沒有學習記錄</h3>
+                    <h3>📊 還沒有Learning Records</h3>
                     <p>開始學習來登上排行榜吧！</p>
                 </div>
             `;
@@ -3988,7 +3988,7 @@ async function loadLearningTimeLeaderboard() {
         container.innerHTML = html;
     } catch (error) {
         console.error('[DEBUG] 載入學習時間排行榜失敗:', error);
-        container.innerHTML = '<p class="placeholder" style="color: #c33;">載入失敗：' + error.message + '</p>';
+        container.innerHTML = '<p class="placeholder" style="color: #c33;">Load failed: ' + error.message + '</p>';
     }
 }
 
@@ -3997,7 +3997,7 @@ async function loadReviewScoreLeaderboard() {
     const container = document.getElementById('reviewScoreLeaderboard');
     if (!container) return;
 
-    container.innerHTML = '<div class="loading-spinner">載入中...</div>';
+    container.innerHTML = '<div class="loading-spinner">Loading...</div>';
 
     try {
         const response = await fetch('/api/leaderboard/review-score');
@@ -4010,7 +4010,7 @@ async function loadReviewScoreLeaderboard() {
             container.innerHTML = `
                 <div class="leaderboard-empty">
                     <h3>🎯 還沒有複習記錄</h3>
-                    <p>開始複習來提升你的成績吧！</p>
+                    <p>Start reviewing來提升你的成績吧！</p>
                 </div>
             `;
             return;
@@ -4038,16 +4038,16 @@ async function loadReviewScoreLeaderboard() {
         container.innerHTML = html;
     } catch (error) {
         console.error('[DEBUG] 載入複習成績排行榜失敗:', error);
-        container.innerHTML = '<p class="placeholder" style="color: #c33;">載入失敗：' + error.message + '</p>';
+        container.innerHTML = '<p class="placeholder" style="color: #c33;">Load failed: ' + error.message + '</p>';
     }
 }
 
-// 載入書籤排行榜
+// 載入Bookmarks排行榜
 async function loadBookmarksLeaderboard() {
     const container = document.getElementById('bookmarksLeaderboard');
     if (!container) return;
 
-    container.innerHTML = '<div class="loading-spinner">載入中...</div>';
+    container.innerHTML = '<div class="loading-spinner">Loading...</div>';
 
     try {
         const response = await fetch('/api/leaderboard/bookmarks');
@@ -4059,8 +4059,8 @@ async function loadBookmarksLeaderboard() {
         if (leaderboard.length === 0) {
             container.innerHTML = `
                 <div class="leaderboard-empty">
-                    <h3>🔖 還沒有書籤記錄</h3>
-                    <p>開始收藏書籤來學習吧！</p>
+                    <h3>🔖 還沒有Bookmarks記錄</h3>
+                    <p>開始收藏Bookmarks來學習吧！</p>
                 </div>
             `;
             return;
@@ -4094,15 +4094,15 @@ async function loadBookmarksLeaderboard() {
 
         container.innerHTML = html;
     } catch (error) {
-        console.error('[DEBUG] 載入書籤排行榜失敗:', error);
-        container.innerHTML = '<p class="placeholder" style="color: #c33;">載入失敗：' + error.message + '</p>';
+        console.error('[DEBUG] 載入Bookmarks排行榜失敗:', error);
+        container.innerHTML = '<p class="placeholder" style="color: #c33;">Load failed: ' + error.message + '</p>';
     }
 }
 
-// 從排行榜選擇書籤
+// 從排行榜選擇Bookmarks
 async function selectBookmarkFromLeaderboard(url) {
     try {
-        // 記錄書籤被觀看
+        // 記錄Bookmarks被觀看
         await fetch('/api/bookmarks/record-view', {
             method: 'POST',
             headers: {
@@ -4111,14 +4111,14 @@ async function selectBookmarkFromLeaderboard(url) {
             body: JSON.stringify({ url: url })
         });
 
-        // 載入書籤對應的影片
+        // 載入Bookmarks對應的影片
         await selectBookmark(url);
         
         // 關閉排行榜視窗
         hideLeaderboardModal();
     } catch (error) {
-        console.error('[DEBUG] 記錄書籤觀看失敗:', error);
-        // 即使記錄失敗，也繼續載入影片
+        console.error('[DEBUG] 記錄Bookmarks觀看失敗:', error);
+        // 即使記錄失敗，也繼續Load Video
         await selectBookmark(url);
         
         // 關閉排行榜視窗
@@ -4138,9 +4138,9 @@ function formatTime(seconds) {
     }
 }
 
-// 在暱稱系統初始化後也初始化排行榜系統
+// 在Nickname system初始化後也初始化排行榜系統
 // ================================
-// 學習統計系統相關函數
+// Learning stats系統相關函數
 // ================================
 
 // 學習會話相關變數
@@ -4152,9 +4152,9 @@ function startLearningSession(nickname) {
     if (!nickname) return;
 
     learningSessionStart = Date.now();
-    console.log('[學習統計] 開始學習會話，暱稱:', nickname);
+    console.log('[Learning stats] 開始學習會話，暱稱:', nickname);
 
-    // 添加學習記錄
+    // 添加Learning Records
     addLearningRecord('video_watch', {
         action: 'start',
         timestamp: new Date().toISOString()
@@ -4168,20 +4168,20 @@ async function endLearningSession(nickname) {
     const sessionDuration = Math.floor((Date.now() - learningSessionStart) / 1000); // 秒
 
     if (sessionDuration < 10) { // 少於10秒的不記錄
-        console.log('[學習統計] 學習時間太短，跳過記錄');
+        console.log('[Learning stats] 學習時間太短，跳過記錄');
         return;
     }
 
     try {
-        // 更新學習統計
+        // 更新Learning stats
         await updateUserStats(nickname, {
             learning_time: sessionDuration,  // 累加學習時間
             videos_watched: currentLearningVideoId ? 1 : 0  // 如果有觀看影片，累加影片數量
         });
 
-        console.log(`[學習統計] 記錄學習會話：${sessionDuration}秒，影片：${currentLearningVideoId ? '已觀看' : '未觀看'}`);
+        console.log(`[Learning stats] 記錄學習會話：${sessionDuration}秒，影片：${currentLearningVideoId ? '已觀看' : '未觀看'}`);
     } catch (error) {
-        console.error('[學習統計] 記錄學習統計失敗:', error);
+        console.error('[Learning stats] 記錄Learning stats失敗:', error);
     }
 
     learningSessionStart = null;
@@ -4207,10 +4207,10 @@ async function updateUserStats(nickname, stats) {
         }
 
         const result = await response.json();
-        console.log('[學習統計] 統計更新成功:', result.stats);
+        console.log('[Learning stats] 統計更新成功:', result.stats);
         return result.stats;
     } catch (error) {
-        console.error('[學習統計] 更新統計失敗:', error);
+        console.error('[Learning stats] 更新統計失敗:', error);
         throw error;
     }
 }
@@ -4223,31 +4223,31 @@ async function recordReviewResult(nickname, correct, total) {
             review_correct: correct,  // 累加正確數量
             review_total: total  // 累加總題數
         });
-        console.log(`[學習統計] 記錄複習結果：正確${correct}/${total}`);
+        console.log(`[Learning stats] 記錄複習結果：正確${correct}/${total}`);
     } catch (error) {
-        console.error('[學習統計] 記錄複習結果失敗:', error);
+        console.error('[Learning stats] 記錄複習結果失敗:', error);
     }
 }
 
 // ================================
-// 學習記錄系統相關函數
+// Learning Records系統相關函數
 // ================================
 
-// 初始化學習記錄系統
+// 初始化Learning Records系統
 function initializeLearningRecordsSystem() {
-    // 學習記錄按鈕事件
+    // Learning Records按鈕事件
     const learningRecordsBtn = document.getElementById('learningRecordsBtn');
     if (learningRecordsBtn) {
         learningRecordsBtn.addEventListener('click', showLearningRecordsModal);
     }
 
-    // 學習記錄Modal關閉事件
+    // Learning RecordsModal關閉事件
     const learningRecordsModalClose = document.getElementById('learningRecordsModalClose');
     if (learningRecordsModalClose) {
         learningRecordsModalClose.addEventListener('click', hideLearningRecordsModal);
     }
 
-    // 學習記錄標籤切換
+    // Learning Records標籤切換
     document.querySelectorAll('#learningRecordsModal .tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const tab = btn.dataset.tab;
@@ -4272,24 +4272,24 @@ function initializeLearningRecordsSystem() {
         });
     });
 
-    // 載入進度按鈕事件
+    // Load progress按鈕事件
     const loadProgressBtn = document.getElementById('loadProgressBtn');
     if (loadProgressBtn) {
         loadProgressBtn.addEventListener('click', loadLearningProgress);
     }
 }
 
-// 顯示學習記錄Modal
+// 顯示Learning RecordsModal
 function showLearningRecordsModal() {
     const modal = document.getElementById('learningRecordsModal');
     if (modal) {
         modal.style.display = 'flex';
-        // 預設載入學習歷史
+        // 預設載入Learning history
         loadLearningHistory();
     }
 }
 
-// 隱藏學習記錄Modal
+// 隱藏Learning RecordsModal
 function hideLearningRecordsModal() {
     const modal = document.getElementById('learningRecordsModal');
     if (modal) {
@@ -4297,19 +4297,19 @@ function hideLearningRecordsModal() {
     }
 }
 
-// 載入學習歷史
+// 載入Learning history
 async function loadLearningHistory() {
     const container = document.getElementById('learningHistory');
     if (!container) return;
 
-    container.innerHTML = '<div class="loading-spinner">載入中...</div>';
+    container.innerHTML = '<div class="loading-spinner">Loading...</div>';
 
     try {
         const nickname = getCurrentNickname();
         if (!nickname) return;
 
         const response = await fetch(`/api/learning-records?nickname=${encodeURIComponent(nickname)}`);
-        if (!response.ok) throw new Error('無法載入學習歷史');
+        if (!response.ok) throw new Error('無法載入Learning history');
 
         const data = await response.json();
         const records = data.records || [];
@@ -4317,8 +4317,8 @@ async function loadLearningHistory() {
         if (records.length === 0) {
             container.innerHTML = `
                 <div class="learning-history-empty">
-                    <h3>📚 還沒有學習記錄</h3>
-                    <p>開始學習來創建你的學習歷史吧！</p>
+                    <h3>📚 還沒有Learning Records</h3>
+                    <p>開始學習來創建你的Learning history吧！</p>
                 </div>
             `;
             return;
@@ -4344,24 +4344,24 @@ async function loadLearningHistory() {
 
         container.innerHTML = html;
     } catch (error) {
-        console.error('[學習記錄] 載入學習歷史失敗:', error);
-        container.innerHTML = '<p class="placeholder" style="color: #c33;">載入失敗：' + error.message + '</p>';
+        console.error('[Learning Records] 載入Learning history失敗:', error);
+        container.innerHTML = '<p class="placeholder" style="color: #c33;">Load failed: ' + error.message + '</p>';
     }
 }
 
-// 載入學習統計
+// 載入Learning stats
 async function loadLearningStats() {
     const container = document.getElementById('learningStats');
     if (!container) return;
 
-    container.innerHTML = '<div class="loading-spinner">載入中...</div>';
+    container.innerHTML = '<div class="loading-spinner">Loading...</div>';
 
     try {
         const nickname = getCurrentNickname();
         if (!nickname) return;
 
         const response = await fetch(`/api/user/stats?nickname=${encodeURIComponent(nickname)}`);
-        if (!response.ok) throw new Error('無法載入學習統計');
+        if (!response.ok) throw new Error('無法載入Learning stats');
 
         const stats = await response.json();
 
@@ -4397,12 +4397,12 @@ async function loadLearningStats() {
             </div>
         `;
     } catch (error) {
-        console.error('[學習記錄] 載入學習統計失敗:', error);
-        container.innerHTML = '<p class="placeholder" style="color: #c33;">載入失敗：' + error.message + '</p>';
+        console.error('[Learning Records] 載入Learning stats失敗:', error);
+        container.innerHTML = '<p class="placeholder" style="color: #c33;">Load failed: ' + error.message + '</p>';
     }
 }
 
-// 載入進度單字庫選擇
+// Load progress單字庫選擇
 async function loadProgressBankSelect() {
     const select = document.getElementById('progressBankSelect');
     if (!select) return;
@@ -4412,12 +4412,12 @@ async function loadProgressBankSelect() {
 
     try {
         const response = await fetch(`/api/word-banks?nickname=${encodeURIComponent(nickname)}`);
-        if (!response.ok) throw new Error('無法載入單字庫列表');
+        if (!response.ok) throw new Error('無法載入Word bank list');
 
         const data = await response.json();
         const banks = data.word_banks || [];
 
-        select.innerHTML = '<option value="">請選擇單字庫...</option>';
+        select.innerHTML = '<option value="">請Choose a word bank...</option>';
         banks.forEach(bank => {
             const option = document.createElement('option');
             option.value = bank.name;
@@ -4425,11 +4425,11 @@ async function loadProgressBankSelect() {
             select.appendChild(option);
         });
     } catch (error) {
-        console.error('[學習記錄] 載入單字庫列表失敗:', error);
+        console.error('[Learning Records] 載入Word bank list失敗:', error);
     }
 }
 
-// 載入學習進度
+// 載入Learning progress
 async function loadLearningProgress() {
     const select = document.getElementById('progressBankSelect');
     const container = document.getElementById('learningProgress');
@@ -4438,18 +4438,18 @@ async function loadLearningProgress() {
 
     const bankName = select.value;
     if (!bankName) {
-        container.innerHTML = '<p class="placeholder">請選擇單字庫查看學習進度</p>';
+        container.innerHTML = '<p class="placeholder">請Choose a word bank查看Learning progress</p>';
         return;
     }
 
-    container.innerHTML = '<div class="loading-spinner">載入中...</div>';
+    container.innerHTML = '<div class="loading-spinner">Loading...</div>';
 
     try {
         const nickname = getCurrentNickname();
         if (!nickname) return;
 
         const response = await fetch(`/api/learning-progress/${encodeURIComponent(bankName)}?nickname=${encodeURIComponent(nickname)}`);
-        if (!response.ok) throw new Error('無法載入學習進度');
+        if (!response.ok) throw new Error('無法載入Learning progress');
 
         const progress = await response.json();
 
@@ -4478,12 +4478,12 @@ async function loadLearningProgress() {
             </div>
         `;
     } catch (error) {
-        console.error('[學習記錄] 載入學習進度失敗:', error);
-        container.innerHTML = '<p class="placeholder" style="color: #c33;">載入失敗：' + error.message + '</p>';
+        console.error('[Learning Records] 載入Learning progress失敗:', error);
+        container.innerHTML = '<p class="placeholder" style="color: #c33;">Load failed: ' + error.message + '</p>';
     }
 }
 
-// 添加學習記錄
+// 添加Learning Records
 async function addLearningRecord(type, data) {
     try {
         const nickname = getCurrentNickname();
@@ -4500,9 +4500,9 @@ async function addLearningRecord(type, data) {
                 data: data
             })
         });
-        console.log(`[學習記錄] 添加記錄: ${type}`);
+        console.log(`[Learning Records] 添加記錄: ${type}`);
     } catch (error) {
-        console.error('[學習記錄] 添加記錄失敗:', error);
+        console.error('[Learning Records] 添加記錄失敗:', error);
     }
 }
 
@@ -4510,7 +4510,7 @@ async function addLearningRecord(type, data) {
 function getRecordTypeInfo(type) {
     const types = {
         'video_watch': { text: '觀看影片', class: 'record-type-video', title: '觀看影片' },
-        'word_review': { text: '單字複習', class: 'record-type-review', title: '複習單字' },
+        'word_review': { text: '單字複習', class: 'record-type-review', title: 'Review words' },
         'phrase_lookup': { text: '片語查詢', class: 'record-type-lookup', title: '查詢片語' },
         'word_lookup': { text: '單字查詢', class: 'record-type-lookup', title: '查詢單字' },
         'word_added': { text: '添加單字', class: 'record-type-lookup', title: '添加單字到單字庫' }
@@ -4600,7 +4600,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeThemeSystem();
 });
 
-// 在頁面卸載前記錄學習統計
+// 在頁面卸載前記錄Learning stats
 window.addEventListener('beforeunload', function() {
     const nickname = getCurrentNickname();
     if (nickname) {
