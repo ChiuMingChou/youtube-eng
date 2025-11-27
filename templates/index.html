@@ -1,79 +1,79 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>英文學習網站 - YouTube 字幕學習</title>
+    <title>English Learning - YouTube Subtitle Trainer</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎓 英文學習網站</h1>
-            <p class="subtitle">透過 YouTube 影片學習英文，同步顯示英中字幕</p>
+            <h1>🎓 English Learning</h1>
+            <p class="subtitle">Study English with YouTube videos and synced subtitles</p>
             <div class="header-actions">
                 <div class="stats-display" id="statsDisplay">
                     <div class="stats-item">
-                        <span class="stats-label">👥 用戶:</span>
+                        <span class="stats-label">👥 Users:</span>
                         <span class="stats-value" id="totalUsers">--</span>
                     </div>
                     <div class="stats-item">
-                        <span class="stats-label">⏱️ 總時長:</span>
+                        <span class="stats-label">⏱️ Total time:</span>
                         <span class="stats-value" id="totalTime">--</span>
                     </div>
                     <div class="stats-item">
-                        <span class="stats-label">🟢 線上:</span>
+                        <span class="stats-label">🟢 Online:</span>
                         <span class="stats-value" id="onlineUsers">--</span>
                     </div>
                 </div>
                 <div class="nickname-display" id="nicknameDisplay" style="display: none;">
                     <span id="currentNickname"></span>
-                    <button id="changeNicknameBtn" class="change-nickname-btn" title="更換暱稱">🔄</button>
+                    <button id="changeNicknameBtn" class="change-nickname-btn" title="Change nickname">🔄</button>
                 </div>
                 <div class="theme-selector-container">
-                    <label for="themeSelect" class="theme-label">🎨 風格:</label>
+                    <label for="themeSelect" class="theme-label">🎨 Theme:</label>
                     <select id="themeSelect" class="theme-select">
-                        <option value="default">預設風格（紫色）</option>
-                        <option value="blue">藍色清新</option>
-                        <option value="green">綠色自然</option>
-                        <option value="orange">橙色活力</option>
-                        <option value="dark">深色專業</option>
+                        <option value="default">Default (Purple)</option>
+                        <option value="blue">Calm Blue</option>
+                        <option value="green">Natural Green</option>
+                        <option value="orange">Energetic Orange</option>
+                        <option value="dark">Professional Dark</option>
                     </select>
                 </div>
-                <button id="leaderboardBtn" class="leaderboard-btn">🏆 排行榜</button>
-                <button id="learningRecordsBtn" class="learning-records-btn">📊 學習記錄</button>
-                <button id="wordBankBtn" class="word-bank-btn">📚 單字庫</button>
+                <button id="leaderboardBtn" class="leaderboard-btn">🏆 Leaderboard</button>
+                <button id="learningRecordsBtn" class="learning-records-btn">📊 Learning Records</button>
+                <button id="wordBankBtn" class="word-bank-btn">📚 Word Banks</button>
             </div>
         </header>
 
         <div class="input-section">
             <div class="url-input-container">
                 <div class="url-input-wrapper">
-                    <input 
-                        type="text" 
-                        id="youtubeUrl" 
-                        placeholder="請輸入 YouTube 網址，例如：https://www.youtube.com/watch?v=VIDEO_ID"
+                    <input
+                        type="text"
+                        id="youtubeUrl"
+                        placeholder="Enter a YouTube URL, e.g. https://www.youtube.com/watch?v=VIDEO_ID"
                         class="url-input"
                     >
                     <div class="bookmark-dropdown-container">
-                        <button id="bookmarkBtn" class="bookmark-btn" title="書籤">🔖</button>
+                        <button id="bookmarkBtn" class="bookmark-btn" title="Bookmarks">🔖</button>
                         <div id="bookmarkDropdown" class="bookmark-dropdown" style="display: none;">
                             <div class="bookmark-header">
-                                <span>書籤</span>
+                                <span>Bookmarks</span>
                                 <div class="bookmark-header-actions">
-                                    <button id="exportBookmarksBtn" class="bookmark-action-btn" title="匯出書籤">📥</button>
-                                    <button id="importBookmarksBtn" class="bookmark-action-btn" title="匯入書籤">📤</button>
-                                    <button id="addBookmarkBtn" class="add-bookmark-btn" title="添加當前網址">+</button>
+                                    <button id="exportBookmarksBtn" class="bookmark-action-btn" title="Export bookmarks">📥</button>
+                                    <button id="importBookmarksBtn" class="bookmark-action-btn" title="Import bookmarks">📤</button>
+                                    <button id="addBookmarkBtn" class="add-bookmark-btn" title="Add current URL">+</button>
                                 </div>
                             </div>
                             <input type="file" id="importBookmarkFileInput" accept=".json" style="display: none;">
                             <div id="bookmarkList" class="bookmark-list">
-                                <p class="placeholder">載入中...</p>
+                                <p class="placeholder">Loading...</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button id="loadVideo" class="load-btn">載入影片</button>
+                <button id="loadVideo" class="load-btn">Load Video</button>
             </div>
         </div>
 
@@ -86,78 +86,78 @@
             
             <div class="subtitles-container">
                 <div class="subtitle-header">
-                    <h5>字幕</h5>
-                    <button id="subtitleControlsToggle" class="subtitle-controls-toggle" title="展開/收起控制面板">
+                    <h5>Subtitles</h5>
+                    <button id="subtitleControlsToggle" class="subtitle-controls-toggle" title="Expand/Collapse controls">
                         <span class="triangle-icon"></span>
                     </button>
                     <div class="subtitle-controls" id="subtitleControls">
                         <label>
-                            <input type="checkbox" id="autoScroll" checked> 自動滾動
+                            <input type="checkbox" id="autoScroll" checked> Auto scroll
                         </label>
                         <label>
-                            <input type="checkbox" id="showEnglish" checked> 顯示英文
+                            <input type="checkbox" id="showEnglish" checked> Show English
                         </label>
                         <label>
-                            <input type="checkbox" id="showChinese" checked> 顯示中文
+                            <input type="checkbox" id="showChinese" checked> Show Chinese
                         </label>
                         <label>
-                            <input type="checkbox" id="wordHighlight" checked> 單字高亮
+                            <input type="checkbox" id="wordHighlight" checked> Highlight words
                         </label>
                         <div class="time-offset-control">
-                            <label>時間偏移：</label>
+                            <label>Time offset:</label>
                             <button id="offsetMinus" class="offset-btn">-0.5s</button>
                             <span id="offsetValue">0.0s</span>
                             <button id="offsetPlus" class="offset-btn">+0.5s</button>
-                            <button id="offsetReset" class="offset-btn">重置</button>
+                            <button id="offsetReset" class="offset-btn">Reset</button>
                         </div>
                         <div class="video-size-control">
-                            <label>影片大小：</label>
+                            <label>Video size:</label>
                             <select id="videoSizeSelect" class="size-select">
-                                <option value="small">小</option>
-                                <option value="medium" selected>中</option>
-                                <option value="large">大</option>
+                                <option value="small">Small</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="large">Large</option>
                             </select>
                         </div>
                         <div class="subtitle-lines-control">
-                            <label>字幕行數：</label>
+                            <label>Subtitle lines:</label>
                             <select id="subtitleLinesSelect" class="lines-select">
-                                <option value="small">小</option>
-                                <option value="medium" selected>中</option>
-                                <option value="large">大</option>
+                                <option value="small">Few</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="large">Many</option>
                             </select>
                         </div>
                         <div class="subtitle-font-size-control">
-                            <label>字體大小：</label>
+                            <label>Font size:</label>
                             <select id="fontSizeSelect" class="font-size-select">
-                                <option value="small">小</option>
-                                <option value="medium" selected>中</option>
-                                <option value="large">大</option>
+                                <option value="small">Small</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="large">Large</option>
                             </select>
                         </div>
                         <div class="layout-control">
-                            <label>布局：</label>
+                            <label>Layout:</label>
                             <select id="layoutSelect" class="layout-select">
-                                <option value="side-by-side" selected>左右</option>
-                                <option value="stacked">上下</option>
+                                <option value="side-by-side" selected>Side by side</option>
+                                <option value="stacked">Stacked</option>
                             </select>
                         </div>
                         <div class="width-control">
-                            <label>容器寬度：</label>
+                            <label>Container width:</label>
                             <select id="containerWidth" class="width-select">
-                                <option value="1200">1200px (窄)</option>
-                                <option value="1400" selected>1400px (中)</option>
-                                <option value="1600">1600px (寬)</option>
-                                <option value="1800">1800px (很寬)</option>
-                                <option value="100">100% (全寬)</option>
+                                <option value="1200">1200px (narrow)</option>
+                                <option value="1400" selected>1400px (medium)</option>
+                                <option value="1600">1600px (wide)</option>
+                                <option value="1800">1800px (extra wide)</option>
+                                <option value="100">100% (full width)</option>
                             </select>
                         </div>
                         <div class="playback-speed-control">
-                            <label>播放速度：</label>
+                            <label>Playback speed:</label>
                             <select id="playbackSpeed" class="playback-speed-select">
                                 <option value="0.25">0.25x</option>
                                 <option value="0.5">0.5x</option>
                                 <option value="0.75">0.75x</option>
-                                <option value="1" selected>1x (正常)</option>
+                                <option value="1" selected>1x (normal)</option>
                                 <option value="1.25">1.25x</option>
                                 <option value="1.5">1.5x</option>
                                 <option value="1.75">1.75x</option>
@@ -167,7 +167,7 @@
                     </div>
                 </div>
                 <div id="subtitles" class="subtitles-content">
-                    <p class="placeholder">載入字幕中...</p>
+                    <p class="placeholder">Loading subtitles...</p>
                 </div>
             </div>
         </div>
@@ -177,20 +177,20 @@
     <div id="wordModal" class="word-modal" style="display: none;">
         <div class="word-modal-content">
             <div class="word-modal-header">
-                <h2 id="wordModalTitle">單字資訊</h2>
+                <h2 id="wordModalTitle">Word details</h2>
                 <button class="word-modal-close" id="wordModalClose">&times;</button>
             </div>
             <div class="word-modal-body" id="wordModalBody">
-                <div class="loading-spinner">載入中...</div>
+                <div class="loading-spinner">Loading...</div>
             </div>
             <div class="word-modal-footer" id="wordModalFooter" style="display: none;">
                 <div class="add-to-bank-section">
-                    <label for="bankSelect">加入單字庫：</label>
+                    <label for="bankSelect">Add to word bank:</label>
                     <select id="bankSelect" class="bank-select">
-                        <option value="">選擇單字庫...</option>
+                        <option value="">Choose a word bank...</option>
                     </select>
-                    <button id="addToBankBtn" class="add-to-bank-btn">加入</button>
-                    <button id="createBankBtn" class="create-bank-btn">新建單字庫</button>
+                    <button id="addToBankBtn" class="add-to-bank-btn">Add</button>
+                    <button id="createBankBtn" class="create-bank-btn">Create new bank</button>
                 </div>
             </div>
         </div>
@@ -200,47 +200,47 @@
     <div id="wordBankModal" class="word-modal" style="display: none;">
         <div class="word-modal-content word-bank-modal-content">
             <div class="word-modal-header">
-                <h2>📚 單字庫管理</h2>
+                <h2>📚 Word Bank Management</h2>
                 <button class="word-modal-close" id="wordBankModalClose">&times;</button>
             </div>
             <div class="word-modal-body">
                 <div class="word-bank-tabs">
-                    <button class="tab-btn active" data-tab="list">單字庫列表</button>
-                    <button class="tab-btn" data-tab="review">複習單字</button>
+                    <button class="tab-btn active" data-tab="list">Word bank list</button>
+                    <button class="tab-btn" data-tab="review">Review words</button>
                 </div>
-                
+
                 <!-- 單字庫列表 -->
                 <div id="bankListTab" class="tab-content active">
                     <div class="bank-list-header">
-                        <button id="createNewBankBtn" class="create-new-bank-btn">+ 新建單字庫</button>
-                        <button id="exportBanksBtn" class="export-banks-btn">📥 匯出</button>
-                        <button id="importBanksBtn" class="import-banks-btn">📤 匯入</button>
+                        <button id="createNewBankBtn" class="create-new-bank-btn">+ Create word bank</button>
+                        <button id="exportBanksBtn" class="export-banks-btn">📥 Export</button>
+                        <button id="importBanksBtn" class="import-banks-btn">📤 Import</button>
                         <input type="file" id="importFileInput" accept=".json" style="display: none;">
                     </div>
                     <div id="bankList" class="bank-list">
-                        <div class="loading-spinner">載入中...</div>
+                        <div class="loading-spinner">Loading...</div>
                     </div>
                 </div>
-                
+
                 <!-- 複習單字 -->
                 <div id="reviewTab" class="tab-content">
                     <div class="review-controls">
-                        <label>選擇單字庫：</label>
+                        <label>Select a word bank:</label>
                         <select id="reviewBankSelect" class="bank-select">
-                            <option value="">請選擇單字庫...</option>
+                            <option value="">Choose a word bank...</option>
                         </select>
                         <div class="review-mode-controls">
-                            <label>複習模式：</label>
+                            <label>Review mode:</label>
                             <div class="review-mode-buttons">
-                                <button id="spacedReviewBtn" class="review-mode-btn active" data-mode="spaced">間隔重複</button>
-                                <button id="randomReviewBtn" class="review-mode-btn" data-mode="random">隨機複習</button>
-                                <button id="fillInBlankBtn" class="review-mode-btn" data-mode="fill-in-blank">填空模式</button>
+                                <button id="spacedReviewBtn" class="review-mode-btn active" data-mode="spaced">Spaced repetition</button>
+                                <button id="randomReviewBtn" class="review-mode-btn" data-mode="random">Random review</button>
+                                <button id="fillInBlankBtn" class="review-mode-btn" data-mode="fill-in-blank">Fill in the blank</button>
                             </div>
                         </div>
-                        <button id="startReviewBtn" class="start-review-btn">開始複習</button>
+                        <button id="startReviewBtn" class="start-review-btn">Start reviewing</button>
                     </div>
                     <div id="reviewContent" class="review-content">
-                        <p class="placeholder">請選擇單字庫開始複習</p>
+                        <p class="placeholder">Choose a word bank to start reviewing</p>
                     </div>
                 </div>
             </div>
@@ -251,12 +251,12 @@
     <div id="bankContentModal" class="word-modal" style="display: none;">
         <div class="word-modal-content">
             <div class="word-modal-header">
-                <h2 id="bankContentTitle">單字庫內容</h2>
+                <h2 id="bankContentTitle">Word bank contents</h2>
                 <button class="word-modal-close" id="bankContentModalClose">&times;</button>
             </div>
             <div class="word-modal-body">
                 <div id="bankContent" class="bank-content">
-                    <div class="loading-spinner">載入中...</div>
+                    <div class="loading-spinner">Loading...</div>
                 </div>
             </div>
         </div>
@@ -266,41 +266,41 @@
     <div id="learningRecordsModal" class="word-modal" style="display: none;">
         <div class="word-modal-content">
             <div class="word-modal-header">
-                <h2>📊 學習記錄與進度</h2>
+                <h2>📊 Learning history & progress</h2>
                 <button class="word-modal-close" id="learningRecordsModalClose">&times;</button>
             </div>
             <div class="word-modal-body">
                 <div class="records-tabs">
-                    <button class="tab-btn active" data-tab="history">學習歷史</button>
-                    <button class="tab-btn" data-tab="progress">學習進度</button>
-                    <button class="tab-btn" data-tab="stats">學習統計</button>
+                    <button class="tab-btn active" data-tab="history">Learning history</button>
+                    <button class="tab-btn" data-tab="progress">Learning progress</button>
+                    <button class="tab-btn" data-tab="stats">Learning stats</button>
                 </div>
 
                 <!-- 學習歷史 -->
                 <div id="historyTab" class="tab-content active">
                     <div id="learningHistory" class="learning-history">
-                        <div class="loading-spinner">載入中...</div>
+                        <div class="loading-spinner">Loading...</div>
                     </div>
                 </div>
 
                 <!-- 學習進度 -->
                 <div id="progressTab" class="tab-content">
                     <div class="progress-controls">
-                        <label>選擇單字庫：</label>
+                        <label>Select a word bank:</label>
                         <select id="progressBankSelect" class="bank-select">
-                            <option value="">請選擇單字庫...</option>
+                            <option value="">Choose a word bank...</option>
                         </select>
-                        <button id="loadProgressBtn" class="load-progress-btn">載入進度</button>
+                        <button id="loadProgressBtn" class="load-progress-btn">Load progress</button>
                     </div>
                     <div id="learningProgress" class="learning-progress">
-                        <p class="placeholder">請選擇單字庫查看學習進度</p>
+                        <p class="placeholder">Select a word bank to view progress</p>
                     </div>
                 </div>
 
                 <!-- 學習統計 -->
                 <div id="statsTab" class="tab-content">
                     <div id="learningStats" class="learning-stats">
-                        <div class="loading-spinner">載入中...</div>
+                        <div class="loading-spinner">Loading...</div>
                     </div>
                 </div>
             </div>
@@ -311,17 +311,17 @@
     <div id="nicknameModal" class="word-modal" style="display: none;">
         <div class="word-modal-content nickname-modal-content">
             <div class="word-modal-header">
-                <h2>👤 歡迎使用英文學習系統</h2>
+                <h2>👤 Welcome to the English learning tool</h2>
             </div>
             <div class="word-modal-body">
                 <div class="nickname-input-section">
-                    <label for="nicknameInput">請輸入您的暱稱：</label>
-                    <input type="text" id="nicknameInput" class="nickname-input" placeholder="輸入暱稱..." maxlength="20">
-                    <p class="nickname-hint">暱稱將用來記錄您的個人化書籤和單字庫</p>
+                    <label for="nicknameInput">Please enter your nickname:</label>
+                    <input type="text" id="nicknameInput" class="nickname-input" placeholder="Enter nickname..." maxlength="20">
+                    <p class="nickname-hint">Your nickname stores personal bookmarks and word banks.</p>
                 </div>
             </div>
             <div class="word-modal-footer">
-                <button id="confirmNicknameBtn" class="confirm-nickname-btn">確認</button>
+                <button id="confirmNicknameBtn" class="confirm-nickname-btn">Confirm</button>
             </div>
         </div>
     </div>
@@ -330,34 +330,34 @@
     <div id="leaderboardModal" class="word-modal" style="display: none;">
         <div class="word-modal-content">
             <div class="word-modal-header">
-                <h2>🏆 學習排行榜</h2>
+                <h2>🏆 Learning leaderboard</h2>
                 <button class="word-modal-close" id="leaderboardModalClose">&times;</button>
             </div>
             <div class="word-modal-body">
                 <div class="leaderboard-tabs">
-                    <button class="tab-btn active" data-tab="learning-time">📖 學習時間榜</button>
-                    <button class="tab-btn" data-tab="review-score">🎯 複習成績榜</button>
-                    <button class="tab-btn" data-tab="bookmarks">🔖 書籤排行榜</button>
+                    <button class="tab-btn active" data-tab="learning-time">📖 Study time</button>
+                    <button class="tab-btn" data-tab="review-score">🎯 Review scores</button>
+                    <button class="tab-btn" data-tab="bookmarks">🔖 Bookmarks</button>
                 </div>
 
                 <!-- 學習時間排行榜 -->
                 <div id="learningTimeTab" class="tab-content active">
                     <div id="learningTimeLeaderboard" class="leaderboard-content">
-                        <div class="loading-spinner">載入中...</div>
+                        <div class="loading-spinner">Loading...</div>
                     </div>
                 </div>
 
                 <!-- 複習成績排行榜 -->
                 <div id="reviewScoreTab" class="tab-content">
                     <div id="reviewScoreLeaderboard" class="leaderboard-content">
-                        <div class="loading-spinner">載入中...</div>
+                        <div class="loading-spinner">Loading...</div>
                     </div>
                 </div>
 
                 <!-- 書籤排行榜 -->
                 <div id="bookmarksTab" class="tab-content">
                     <div id="bookmarksLeaderboard" class="leaderboard-content">
-                        <div class="loading-spinner">載入中...</div>
+                        <div class="loading-spinner">Loading...</div>
                     </div>
                 </div>
             </div>
@@ -368,7 +368,7 @@
     <footer class="site-footer">
         <div class="footer-content">
             <div class="author-info">
-                <p>© 2025 英文學習網站 | 開發者: <strong>Craig Huang</strong> | 聯絡方式: <a href="mailto:craig7351@gmail.com">craig7351@gmail.com</a></p>
+                <p>© 2025 English Learning | Developer: <strong>Craig Huang</strong> | Contact: <a href="mailto:craig7351@gmail.com">craig7351@gmail.com</a></p>
             </div>
         </div>
     </footer>
